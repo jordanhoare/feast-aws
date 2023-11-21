@@ -1,0 +1,9 @@
+# repository/feature_store.yaml
+
+project: feast_demo_aws
+provider: aws
+registry: s3://feast-workshop-sandbox/registry.pb
+online_store: null
+offline_store:
+  type: file
+entity_key_serialization_version: 2

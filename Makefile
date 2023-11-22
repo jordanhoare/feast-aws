@@ -2,7 +2,10 @@ include .env
 export
 
 plan:
-	cd repository && poetry run feast plan
+	poetry run feast -c repository plan
 
 apply:
-	cd repository && poetry run feast apply
+	poetry run feast -c repository apply
+
+serve:
+	poetry run feast -c repository serve

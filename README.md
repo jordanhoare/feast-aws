@@ -1,23 +1,16 @@
 
 ```
 feast-aws
-├─ .gitignore
 ├─ Makefile
+├─ README.md
 ├─ client
 │  ├─ feature_store.yaml
 │  └─ test_fetch.py
 ├─ driver_stats.parquet
 ├─ infrastructure
-│  ├─ .DS_Store
 │  └─ aws
 │     ├─ .terraform
-│     │  └─ providers
-│     │     └─ registry.terraform.io
-│     │        └─ hashicorp
-│     │           └─ aws
-│     │              └─ 5.26.0
-│     │                 └─ darwin_arm64
-│     │                    └─ terraform-provider-aws_v5.26.0_x5
+│     │  └─ ...
 │     ├─ .terraform.lock.hcl
 │     ├─ main.tf
 │     ├─ outputs.tf
@@ -31,11 +24,27 @@ feast-aws
 │  │  └─ sources.py
 │  ├─ driver_stats
 │  │  ├─ __init__.py
-│  │  ├─ fields.py
+│  │  ├─ services.py
 │  │  ├─ transformations.py
 │  │  └─ views.py
-│  ├─ feature_store.yaml
-│  └─ services.py
-└─ tests
-   └─ __init__.py
+│  └─ feature_store.yaml
+├─ tests
+│  └─ __init__.py
+└─ ui
+   ├─ .gitignore
+   ├─ package-lock.json
+   ├─ package.json
+   ├─ project-list.json
+   ├─ public
+   │  ├─ ...
+   └─ src
+      ├─ App.css
+      ├─ App.js
+      ├─ App.test.js
+      ├─ index.css
+      ├─ index.js
+      ├─ logo.svg
+      ├─ reportWebVitals.js
+      └─ setupTests.js
+
 ```

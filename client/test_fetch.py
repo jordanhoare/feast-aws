@@ -1,8 +1,7 @@
+import pandas as pd
 from feast import FeatureStore
 
 store = FeatureStore(repo_path=".")
-
-import pandas as pd
 
 # Get the latest feature values for unique entities
 entity_df = pd.DataFrame.from_dict({"driver_id": [1001, 1002, 1003, 1004, 1005],})

@@ -1,9 +1,6 @@
-# repository/entities.py
+# repository/common/entities.py
 
-from feast import (
-    Entity,
-    ValueType,
-)
+from feast import Entity, ValueType
 
 driver = Entity(
     name="driver",

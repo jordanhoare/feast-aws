@@ -1,6 +1,12 @@
-# repository/data_sources.py
+# repository/common/sources.py
+
+"""
+Feast supports pulling data from data warehouses like BigQuery, Snowflake,
+Redshift and data lakes (e.g. via Redshift Spectrum, Trino, Spark)
+"""
 
 from feast import FileSource
+
 
 driver_stats = FileSource(
     name="driver_stats_source",

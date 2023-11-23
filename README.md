@@ -1,16 +1,13 @@
 <br />
 <div align="center">
   <a href="https://streamlit.io/">
-    <img src="https://github.com/feast-dev/artwork/blob/master/feast-logos/icon/color/feast_icon-color.png" alt="Logo" width="auto" height="78">
+    <img src="https://github.com/feast-dev/artwork/blob/master/feast-logos/icon/color/feast_icon-color.png" alt="Logo" width="auto" height="120">
   </a>
 
 <h3 align="center">Feast on AWS</h3>
 
   <p align="center">
-    A complete scalable implementation of feature store management on AWS.
-    <br />
-    <a href="https://feast.dev/"><strong>Feast</strong></a>
-    <br />
+    A scalable implementation of feature store management on AWS using the open-source framework <a href="https://feast.dev/"><strong>Feast</strong></a>.
     <br />
   </p>
 </div>

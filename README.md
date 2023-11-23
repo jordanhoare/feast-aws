@@ -37,7 +37,7 @@ The project encapsulates a full-feature lifecycle management process, from defin
 
 Overview of the project architecture. 
 
-![Architecture1]("https://1650793599-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-LqPPgcuCulk4PnaI4Ob%2Fsync%2F49670e2005498ff506655d32bb31331a38a45810.png?generation=1611862944091987&alt=media")
+![Architecture1](https://1650793599-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-LqPPgcuCulk4PnaI4Ob%2Fsync%2F49670e2005498ff506655d32bb31331a38a45810.png?generation=1611862944091987&alt=media)
 
 <br>
 

@@ -35,10 +35,14 @@ The project encapsulates a full-feature lifecycle management process, from defin
 
 ## Architecture
 
-Overview of the project architecture. Include a link or image of `aws_architecture.png` from the `docs` directory for a visual representation.
+Overview of the project architecture. 
 
+![Architecture1]("https://1650793599-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-LqPPgcuCulk4PnaI4Ob%2Fsync%2F49670e2005498ff506655d32bb31331a38a45810.png?generation=1611862944091987&alt=media")
 
-![Architecture](docs/aws_architecture.png)
+<br>
+
+![Architecture2](docs/aws_architecture.png)
+
 
 <br>
 

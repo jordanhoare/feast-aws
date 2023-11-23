@@ -13,5 +13,8 @@ serve:
 ui:
 	poetry run feast -c repository ui
 
-run:
+run_server:
 	poetry run python -m server
+
+run_client:
+	cd ui && yarn start

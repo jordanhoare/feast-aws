@@ -9,13 +9,11 @@ ReactDOM.render(
   <React.StrictMode>
     <FeastUI
       feastUIConfigs={{
-        projectListPromise: fetch(SOME_PATH, {
+        projectListPromise: fetch('http://localhost:8000/projects', {
           headers: {
             "Content-Type": "application/json",
           },
-        }).then((res) => {
-          return res.json();
-        })
+        }).then((res) => res.json())
       }}
     />
   </React.StrictMode>,

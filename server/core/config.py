@@ -11,6 +11,8 @@ class LocalSettings(BaseSettings):
     SERVER_PORT: int = 8000
     SERVER_WORKERS: int = 1
     API_V1_STR: str = "/api/v1"
+    LOCAL_REGISTRY_PATH: str = "server/registry.pb"
+
 
 @lru_cache
 def get_settings() -> LocalSettings:

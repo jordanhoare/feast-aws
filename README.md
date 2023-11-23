@@ -52,11 +52,7 @@ This section provides an overview of the technology stack used in this project, 
 
 - [FastAPI](https://fastapi.tiangolo.com/) - A modern, fast (high-performance), web framework for building APIs with Python 3.7+ based on standard Python type hints.
 
-- [AWS ElastiCache](https://aws.amazon.com/elasticache/) - A fully managed in-memory data store, compatible with Redis or Memcached, that provides a high-performance, scalable, and cost-effective caching solution.
-
 - [Snowflake](https://www.snowflake.com/) - A cloud data platform that provides a data warehouse-as-a-service designed for the cloud, supporting various data workloads.
-
-- [AWS S3](https://aws.amazon.com/s3/) - Amazon Simple Storage Service (S3) is an object storage service offering industry-leading scalability, data availability, security, and performance.
 
 - [React](https://reactjs.org/) - A JavaScript library for building user interfaces, maintained by Facebook and a community of individual developers and companies.
 
@@ -64,7 +60,7 @@ This section provides an overview of the technology stack used in this project, 
 
 - [GitHub Actions](https://github.com/features/actions) - GitHub's solution to automation, CI/CD, and workflow integration, directly integrated with GitHub repositories.
 
-- [AWS EKS](https://aws.amazon.com/eks/) - Amazon Elastic Kubernetes Service (EKS) is a managed Kubernetes service that makes it easy to run Kubernetes on AWS without needing to install and operate your own Kubernetes control plane.
+- [Apache Airflow](https://airflow.apache.org/) - A platform to programmatically author, schedule, and monitor workflows, allowing you to orchestrate complex computational workflows.
 
 - [DBT](https://www.getdbt.com/) - A data processing framework, based on Python, that allows applying transformations on data inside data warehouses like Snowflake, Redshift, BigQuery, and PostgreSQL.
 
@@ -74,9 +70,13 @@ This section provides an overview of the technology stack used in this project, 
 
 - [AWS Aurora](https://aws.amazon.com/rds/aurora/) - An automated and scalable MySQL and PostgreSQL-compatible relational database with up to five times the performance of standard MySQL databases and three times the performance of standard PostgreSQL databases.
 
-- [Apache Airflow](https://airflow.apache.org/) - A platform to programmatically author, schedule, and monitor workflows, allowing you to orchestrate complex computational workflows.
+- [AWS ElastiCache](https://aws.amazon.com/elasticache/) - A fully managed in-memory data store, compatible with Redis or Memcached, that provides a high-performance, scalable, and cost-effective caching solution.
 
+- [AWS S3](https://aws.amazon.com/s3/) - Amazon Simple Storage Service (S3) is an object storage service offering industry-leading scalability, data availability, security, and performance.
 
+- [AWS EKS](https://aws.amazon.com/eks/) - Amazon Elastic Kubernetes Service (EKS) is a managed Kubernetes service that makes it easy to run Kubernetes on AWS without needing to install and operate your own Kubernetes control plane.
+
+<br>
 
 ## Getting Started
 This guide will walk you through setting up and running the feast-aws project. The project is structured to manage infrastructure using Terraform, define and store features using Feast, and provide a user interface and API server for interaction.

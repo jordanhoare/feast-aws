@@ -50,7 +50,6 @@ Overview of the project architecture. Include a link or image of `aws_architectu
 ## Getting Started
 This guide will walk you through setting up and running the feast-aws project. The project is structured to manage infrastructure using Terraform, define and store features using Feast, and provide a user interface and API server for interaction.
 
-<br>
 
 ### Requirements
 Before starting, ensure you have the following installed:

@@ -1,7 +1,7 @@
 <br />
 <div align="center">
   <a href="https://streamlit.io/">
-    <img src="docs/streamlit.png" alt="Logo" width="auto" height="78">
+    <img src="https://github.com/feast-dev/artwork/blob/master/feast-logos/icon/color/feast_icon-color.png" alt="Logo" width="auto" height="78">
   </a>
 
 <h3 align="center">Feast on AWS</h3>
@@ -43,6 +43,7 @@ The project encapsulates a full-feature lifecycle management process, from defin
 
 Overview of the project architecture. Include a link or image of `aws_architecture.png` from the `docs` directory for a visual representation.
 
+
 ![Architecture](docs/aws_architecture.png)
 
 <br>
@@ -50,6 +51,7 @@ Overview of the project architecture. Include a link or image of `aws_architectu
 ## Getting Started
 This guide will walk you through setting up and running the feast-aws project. The project is structured to manage infrastructure using Terraform, define and store features using Feast, and provide a user interface and API server for interaction.
 
+<br>
 
 ### Requirements
 Before starting, ensure you have the following installed:

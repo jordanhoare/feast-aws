@@ -1,15 +1,17 @@
-# server\api\endpoints\hello.py
-
+from pathlib import Path
 import pandas as pd
 from json import loads, dumps
 from fastapi import APIRouter
-from feast import FeatureStore
+from feast import FeatureStore, RepoConfig
 from datetime import datetime, timedelta
 from server.core.logger import logger
 
 router = APIRouter()
 
-store = FeatureStore(repo_path="../../../repository")
+current_file_path = Path(__file__).resolve()
+repository_path = current_file_path.parents[3] / 'repository'
+
+store = FeatureStore(repo_path=repository_path)
 
 
 @router.get('/')

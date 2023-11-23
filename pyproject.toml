@@ -13,6 +13,7 @@ fastapi = "0.99.1"
 uvicorn = "^0.24.0.post1"
 requests = "^2.31.0"
 python-dotenv = "^1.0.0"
+pandas = "1.4.3"
 
 [build-system]
 requires = ["poetry-core"]

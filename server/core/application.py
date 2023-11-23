@@ -3,13 +3,13 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from server.api.endpoints import hello
+from server.api.endpoints import features
 
 
 def create_api():
     api = FastAPI()
 
-    api.include_router(hello.router, prefix="/hello", tags=["hello"])
+    api.include_router(features.router, prefix="/features", tags=["features"])
 
     @api.on_event("startup")
     async def startup_event() -> None:

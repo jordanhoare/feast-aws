@@ -172,6 +172,118 @@ Outline the structure of the project and describe the purpose of each top-level 
 
 <br>
 
+## Development Plan
+
+This section outlines the planned development features for the Feast-based machine learning workflow implementation on AWS, along with specific tasks under each feature.
+
+### Feature Management with Feast
+
+- [ ] **Feature Service Definition**
+  - [ ] Define and refine feature services in Feast.
+  - [ ] Ensure coverage of all necessary features for ML models.
+  - [ ] Regularly update and maintain feature definitions.
+
+- [ ] **Feature Registry**
+  - [ ] Continue using S3 bucket for Feast registry.
+  - [ ] Evaluate and document requirements for migrating the registry to Postgres.
+  - [ ] Research and decide between AWS RDS and Aurora for Postgres hosting.
+  - [ ] Design and document the migration strategy.
+  - [ ] Test Postgres integration in a staging environment.
+  - [ ] Implement the migration in the production environment.
+
+- [ ] **Online Store with AWS ElastiCache**
+  - [ ] Set up AWS ElastiCache as the online store.
+  - [ ] Integrate ElastiCache with Feast.
+  - [ ] Test and validate real-time feature serving.
+
+- [ ] **Offline Store with Snowflake**
+  - [ ] Integrate Snowflake as the offline store.
+  - [ ] Leverage Feast's native materialization engine.
+  - [ ] Ensure efficient data storage and retrieval.
+
+### Data Ingestion and Processing
+
+- [ ] **Streaming Ingestion with Spark Streaming**
+  - [ ] Implement Spark Streaming for real-time data ingestion.
+  - [ ] Integrate Spark Streaming with Feast.
+  - [ ] Test and validate streaming data processing.
+
+- [ ] **Batch Processing with DBT**
+  - [ ] Utilize DBT for batch transformations.
+  - [ ] Integrate DBT with data stores and Feast.
+  - [ ] Ensure accuracy and efficiency of batch processing.
+
+### Backend Service Development
+
+- [ ] **FastAPI Backend**
+  - [ ] Develop and expand the FastAPI backend service.
+  - [ ] Ensure effective interfacing with the Feast Python API.
+  - [ ] Implement robust error handling and logging.
+
+- [ ] **Deployment on AWS EKS**
+  - [ ] Configure and deploy the backend service on AWS EKS.
+  - [ ] Optimize for scalability and reliability.
+  - [ ] Set up monitoring and alerting mechanisms.
+
+### Frontend UI Service
+
+- [ ] **React App Development**
+  - [ ] Develop the UI service using the Feast NPM package.
+  - [ ] Ensure effective communication with the backend service.
+  - [ ] Implement user-friendly and responsive UI design.
+
+- [ ] **Deployment Strategy**
+  - [ ] Plan and execute the deployment of the React app.
+  - [ ] Consider using AWS Amplify or S3 with CloudFront.
+  - [ ] Ensure secure and efficient routing to the backend service.
+
+### Infrastructure as Code with Terraform
+
+- [ ] **AWS Infrastructure Provisioning**
+  - [ ] Use Terraform for provisioning AWS infrastructure.
+  - [ ] Implement IAM roles, permissions, and service deployments.
+  - [ ] Regularly review and update infrastructure configurations.
+
+- [ ] **Remote State Management**
+  - [ ] Set up Terraform for remote state management in S3.
+  - [ ] Facilitate team collaboration on infrastructure changes.
+  - [ ] Ensure security and consistency of Terraform states.
+
+### CI/CD with GitHub Actions
+
+- [ ] **CI/CD for Backend Service (FastAPI)**
+  - [ ] Set up automated build and test pipelines for every commit and pull request.
+  - [ ] Configure Docker containerization for the FastAPI service.
+  - [ ] Automate deployment to AWS EKS or other chosen environments upon successful tests and reviews.
+
+- [ ] **CI/CD for Frontend Service (React App)**
+  - [ ] Implement automated build and testing for the React application.
+  - [ ] Integrate deployment steps to host the app on AWS Amplify or S3 with CloudFront.
+  - [ ] Ensure environment-specific configurations are managed securely.
+
+- [ ] **CI/CD for Feast Feature Store**
+  - [ ] Automate updates and deployments of Feast configurations and feature definitions.
+  - [ ] Set up validation checks for Feast configuration files.
+  - [ ] Integrate automated deployment to update the feature store in the cloud environment.
+
+- [ ] **Terraform Infrastructure Versioning and Deployment**
+  - [ ] Implement CI pipeline steps for Terraform `fmt` and `validate` to ensure code quality and syntax correctness.
+  - [ ] Configure automated Terraform `plan` execution on pull requests for visibility and review of infrastructure changes.
+  - [ ] Automate Terraform `apply` for staging and production, with manual approval steps for production deployments.
+  - [ ] Securely manage and version Terraform state files, using services like Terraform Cloud or AWS S3 with state locking.
+
+- [ ] **CI/CD for Data Processing Pipelines (Spark/DBT)**
+  - [ ] Create pipelines for testing and deploying data processing scripts and DBT models.
+  - [ ] Ensure version control and testing for all data transformation and processing code.
+  - [ ] Automate deployment of data pipelines to the appropriate data processing services.
+
+- [ ] **CI/CD for Scheduled Jobs (Airflow)**
+  - [ ] Set up CI/CD for Airflow DAGs to ensure they are tested before deployment.
+  - [ ] Automate the deployment of DAGs to the Airflow environment.
+  - [ ] Implement version control and rollback capabilities for DAGs.
+
+<br>
+
 ## Resources
 - Official Feast Docs: [Feast Docs](https://docs.feast.dev/)
 - Official Feast API Reference: [API Reference](https://rtd.feast.dev/en/master/)

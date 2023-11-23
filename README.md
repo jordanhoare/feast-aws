@@ -18,14 +18,11 @@
 ## Table of Contents
 - [Project Overview](#project-overview)
 - [Architecture](#architecture)
+- [Technology Stack](#Technology-Stack)
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
-- [Usage](#usage)
-- [Development](#development)
-- [Contributing](#contributing)
-- [Additional Features](#additional-features)
+- [Development Plan](#development-plan)
 - [Resources](#resources)
-- [License](#license)
 
 <br>
 
@@ -44,6 +41,42 @@ Overview of the project architecture. Include a link or image of `aws_architectu
 ![Architecture](docs/aws_architecture.png)
 
 <br>
+
+
+
+## Technology Stack
+
+This section provides an overview of the technology stack used in this project, with links to the official websites or repositories for more information. Each technology has been selected to ensure the best performance, scalability, and ease of use for our machine learning workflow implementation on AWS.
+
+- [Feast](https://feast.dev/) - An open-source feature store for machine learning, enabling easy management and serving of features for training and inference.
+
+- [FastAPI](https://fastapi.tiangolo.com/) - A modern, fast (high-performance), web framework for building APIs with Python 3.7+ based on standard Python type hints.
+
+- [AWS ElastiCache](https://aws.amazon.com/elasticache/) - A fully managed in-memory data store, compatible with Redis or Memcached, that provides a high-performance, scalable, and cost-effective caching solution.
+
+- [Snowflake](https://www.snowflake.com/) - A cloud data platform that provides a data warehouse-as-a-service designed for the cloud, supporting various data workloads.
+
+- [AWS S3](https://aws.amazon.com/s3/) - Amazon Simple Storage Service (S3) is an object storage service offering industry-leading scalability, data availability, security, and performance.
+
+- [React](https://reactjs.org/) - A JavaScript library for building user interfaces, maintained by Facebook and a community of individual developers and companies.
+
+- [Terraform](https://www.terraform.io/) - An open-source infrastructure as code software tool that provides a consistent CLI workflow to manage hundreds of cloud services.
+
+- [GitHub Actions](https://github.com/features/actions) - GitHub's solution to automation, CI/CD, and workflow integration, directly integrated with GitHub repositories.
+
+- [AWS EKS](https://aws.amazon.com/eks/) - Amazon Elastic Kubernetes Service (EKS) is a managed Kubernetes service that makes it easy to run Kubernetes on AWS without needing to install and operate your own Kubernetes control plane.
+
+- [DBT](https://www.getdbt.com/) - A data processing framework, based on Python, that allows applying transformations on data inside data warehouses like Snowflake, Redshift, BigQuery, and PostgreSQL.
+
+- [Apache Spark](https://spark.apache.org/) - A unified analytics engine for large-scale data processing, with built-in modules for streaming, SQL, machine learning, and graph processing.
+
+- [AWS RDS](https://aws.amazon.com/rds/) - Amazon Relational Database Service (RDS) makes it easy to set up, operate, and scale a relational database in the cloud.
+
+- [AWS Aurora](https://aws.amazon.com/rds/aurora/) - An automated and scalable MySQL and PostgreSQL-compatible relational database with up to five times the performance of standard MySQL databases and three times the performance of standard PostgreSQL databases.
+
+- [Apache Airflow](https://airflow.apache.org/) - A platform to programmatically author, schedule, and monitor workflows, allowing you to orchestrate complex computational workflows.
+
+
 
 ## Getting Started
 This guide will walk you through setting up and running the feast-aws project. The project is structured to manage infrastructure using Terraform, define and store features using Feast, and provide a user interface and API server for interaction.

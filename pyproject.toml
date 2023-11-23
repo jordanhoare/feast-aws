@@ -2,13 +2,17 @@
 name = "feast-aws"
 version = "0.1.0"
 description = ""
-authors = ["Jordan Hoare <jordan@pleiadesperspectives.com.au>"]
+authors = ["Jordan Hoare <jordan.hoare@outlook.com>"]
 readme = "README.md"
 packages = [{include = "feast_aws"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 feast = {extras = ["aws"], version = "^0.34.1"}
+fastapi = "0.99.1"
+uvicorn = "^0.24.0.post1"
+requests = "^2.31.0"
+python-dotenv = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core"]

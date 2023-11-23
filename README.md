@@ -1,191 +1,179 @@
+<br />
+<div align="center">
+  <a href="https://streamlit.io/">
+    <img src="docs/streamlit.png" alt="Logo" width="auto" height="78">
+  </a>
 
-```
-feast-aws
-├─ Makefile
-├─ README.md
-├─ client
-│  ├─ feature_store.yaml
-│  └─ test_fetch.py
-├─ driver_stats.parquet
-├─ infrastructure
-│  └─ aws
-│     ├─ .terraform
-│     │  └─ ...
-│     ├─ .terraform.lock.hcl
-│     ├─ main.tf
-│     ├─ outputs.tf
-│     └─ variables.tf
-├─ poetry.lock
-├─ pyproject.toml
-├─ repository
-│  ├─ common
-│  │  ├─ __init__.py
-│  │  ├─ entities.py
-│  │  └─ sources.py
-│  ├─ driver_stats
-│  │  ├─ __init__.py
-│  │  ├─ services.py
-│  │  ├─ transformations.py
-│  │  └─ views.py
-│  └─ feature_store.yaml
-├─ tests
-│  └─ __init__.py
-└─ ui
-   ├─ .gitignore
-   ├─ package-lock.json
-   ├─ package.json
-   ├─ project-list.json
-   ├─ public
-   │  ├─ ...
-   └─ src
-      ├─ App.css
-      ├─ App.js
-      ├─ App.test.js
-      ├─ index.css
-      ├─ index.js
-      ├─ logo.svg
-      ├─ reportWebVitals.js
-      └─ setupTests.js
+<h3 align="center">Feast on AWS</h3>
 
-```
-```
-feast-aws
-├─ .git
-│  ├─ COMMIT_EDITMSG
-│  ├─ config
-│  ├─ description
-│  ├─ FETCH_HEAD
-│  ├─ HEAD
-│  ├─ hooks
-│  │  ├─ applypatch-msg.sample
-│  │  ├─ commit-msg.sample
-│  │  ├─ fsmonitor-watchman.sample
-│  │  ├─ post-update.sample
-│  │  ├─ pre-applypatch.sample
-│  │  ├─ pre-commit.sample
-│  │  ├─ pre-merge-commit.sample
-│  │  ├─ pre-push.sample
-│  │  ├─ pre-rebase.sample
-│  │  ├─ pre-receive.sample
-│  │  ├─ prepare-commit-msg.sample
-│  │  ├─ push-to-checkout.sample
-│  │  └─ update.sample
-│  ├─ index
-│  ├─ info
-│  │  └─ exclude
-│  ├─ logs
-│  │  ├─ HEAD
-│  │  └─ refs
-│  │     ├─ heads
-│  │     │  └─ master
-│  │     └─ remotes
-│  │        └─ origin
-│  │           ├─ HEAD
-│  │           └─ master
-│  ├─ objects
-│  │  ├─ 0d
-│  │  │  └─ bc643c0c98acecf5cbf62d8a6eac4372620e6e
-│  │  ├─ 0e
-│  │  │  └─ 0de3f31f9bab3f20b82c35c78e34315c2d9dfb
-│  │  ├─ 32
-│  │  │  └─ 155381f8d6e07daca966f119f77df6df8f1126
-│  │  ├─ 4b
-│  │  │  └─ 9d1e9823b8551267797826f1f80ff753695433
-│  │  ├─ 4e
-│  │  │  └─ 20029f57d81828633c05695442e0ad0450af4e
-│  │  ├─ 92
-│  │  │  └─ c26ffe52b50b0a567a560610bcb079337e8326
-│  │  ├─ a7
-│  │  │  └─ 63501d0a6dbb4617d652aaf0c1cad145b7cd57
-│  │  ├─ b0
-│  │  │  └─ cbae0ac987566950296e0e2dbbcaecaa0802d7
-│  │  ├─ c6
-│  │  │  └─ 45beb5be2bb648f8a425ab625590e921962cfd
-│  │  ├─ e0
-│  │  │  └─ d6c7b7223fe7f27bf4461de82f0743e6a51e00
-│  │  ├─ e3
-│  │  │  └─ 6596cd9e39658bbe5e93fc58b95f6297dab831
-│  │  ├─ ee
-│  │  │  └─ efaa2501e5c4ab3699d6e096af0cb2dcb49c28
-│  │  ├─ f1
-│  │  │  └─ 4b3bf87f786e67f064fa0b0e73ed485a439e1d
-│  │  ├─ fd
-│  │  │  └─ d65ea44c2d1665c5c3e6d368d92b87d7bff1c2
-│  │  ├─ info
-│  │  └─ pack
-│  │     ├─ pack-0c47599e6edf5d4b59d7dd3be38c79af7c2da435.idx
-│  │     └─ pack-0c47599e6edf5d4b59d7dd3be38c79af7c2da435.pack
-│  ├─ ORIG_HEAD
-│  ├─ packed-refs
-│  └─ refs
-│     ├─ heads
-│     │  └─ master
-│     ├─ remotes
-│     │  └─ origin
-│     │     ├─ HEAD
-│     │     └─ master
-│     └─ tags
-├─ .gitignore
-├─ docs
-│  └─ aws_architecture.png
-├─ driver_stats.parquet
-├─ infrastructure
-│  └─ aws
-│     ├─ .terraform.lock.hcl
-│     ├─ main.tf
-│     ├─ outputs.tf
-│     └─ variables.tf
-├─ Makefile
-├─ poetry.lock
-├─ pyproject.toml
-├─ README.md
-├─ repository
-│  ├─ common
-│  │  ├─ entities.py
-│  │  ├─ sources.py
-│  │  └─ __init__.py
-│  ├─ driver_stats
-│  │  ├─ services.py
-│  │  ├─ transformations.py
-│  │  ├─ views.py
-│  │  └─ __init__.py
-│  └─ feature_store.yaml
-├─ server
-│  ├─ api
-│  │  ├─ endpoints
-│  │  │  ├─ hello.py
-│  │  │  └─ __init__.py
-│  │  └─ __init__.py
-│  ├─ core
-│  │  ├─ application.py
-│  │  ├─ config.py
-│  │  ├─ logger.py
-│  │  └─ __init__.py
-│  ├─ __init__.py
-│  └─ __main__.py
-├─ tests
-│  └─ __init__.py
-└─ ui
-   ├─ .gitignore
-   ├─ package-lock.json
-   ├─ package.json
-   ├─ project-list.json
-   ├─ public
-   │  ├─ favicon.ico
-   │  ├─ index.html
-   │  ├─ logo192.png
-   │  ├─ logo512.png
-   │  ├─ manifest.json
-   │  └─ robots.txt
-   ├─ README.md
-   └─ src
-      ├─ App.css
-      ├─ App.js
-      ├─ App.test.js
-      ├─ index.css
-      ├─ index.js
-      ├─ logo.svg
-      ├─ reportWebVitals.js
-      └─ setupTests.js
+  <p align="center">
+    A complete scalable implementation of feature store management on AWS.
+    <br />
+    <a href="https://feast.dev/"><strong>Feast</strong></a>
+    <br />
+    <br />
+  </p>
+</div>
 
+<br>
+
+
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Architecture](#architecture)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Usage](#usage)
+- [Development](#development)
+- [Contributing](#contributing)
+- [Additional Features](#additional-features)
+- [Resources](#resources)
+- [License](#license)
+
+<br>
+
+## Project Overview
+The feast-aws project is an solution designed to streamline feature management in machine learning workflows using [Feast](https://feast.dev/), a popular open-source feature store, on AWS cloud infrastructure. 
+
+The project encapsulates a full-feature lifecycle management process, from defining and storing features to serving them for ML models in production. It combines the power of Feast with the scalability and robustness of AWS, creating a versatile environment for managing and deploying features at scale.
+
+<br>
+
+## Architecture
+
+Overview of the project architecture. Include a link or image of `aws_architecture.png` from the `docs` directory for a visual representation.
+
+![Architecture](docs/aws_architecture.png)
+
+<br>
+
+## Getting Started
+This guide will walk you through setting up and running the feast-aws project. The project is structured to manage infrastructure using Terraform, define and store features using Feast, and provide a user interface and API server for interaction.
+
+<br>
+
+### Requirements
+Before starting, ensure you have the following installed:
+
+- [Git](https://git-scm.com/) for command-line interface
+- [Poetry](https://python-poetry.org/) for dependency management and packaging
+- [Docker](https://docs.docker.com/get-docker/) for developing, shipping, and running applications
+- [Yarn](#) for the React UI
+- [Terraform](#) for infastructure management
+
+<br>
+
+### Cloning the Repository
+
+Start by cloning the repository to your local machine:
+
+```bash
+git clone https://github.com/jordanhoare/feast-aws.git
+cd feast-aws
+poetry install
 ```
+
+<br>
+
+### Setting Up Infrastructure
+
+The project uses Terraform scripts located in the `infrastructure/aws` directory to manage AWS resources.
+
+1. Navigate to the infrastructure directory:
+
+   ```bash
+   cd infrastructure/aws
+   ```
+
+2. Initialize Terraform:
+
+   ```bash
+   terraform init
+   ```
+
+3. Apply Terraform scripts to create resources:
+
+   ```bash
+   terraform apply
+   ```
+
+   Confirm the action in the CLI when prompted.
+
+<br>
+
+### Understanding Makefile Commands
+
+The `Makefile` in the root directory contains several commands to simplify project operations:
+
+- `plan`: Runs `feast plan` to show the planned changes to the feature store.
+  
+  ```bash
+  make plan
+  ```
+
+- `apply`: Applies the planned changes to the feature store.
+
+  ```bash
+  make apply
+  ```
+
+- `serve`: Serves the Feast feature store for local development.
+
+  ```bash
+  make serve
+  ```
+
+- `run_server`: Runs the FastAPI server.
+
+  ```bash
+  make run_server
+  ```
+
+- `run_client`: Starts the React client application.
+
+  ```bash
+  make run_client
+  ```
+
+Each command is tailored to abstract complex CLI operations into simpler make commands, enhancing the development and deployment experience.
+
+<br>
+
+### Running the Project
+
+After setting up the infrastructure and understanding the Makefile commands, you can start the various components of the project:
+
+1. Start the FastAPI server:
+
+   ```bash
+   make run_server
+   ```
+
+2. In a separate terminal, start the React client application:
+
+   ```bash
+   make run_client
+   ```
+
+You should now have the FastAPI server, React client, and optionally the Feast UI running, ready for development and testing.
+
+<br>
+
+## Project Structure
+Outline the structure of the project and describe the purpose of each top-level directory.
+
+| Directory/File        | Description                                       |
+|-----------------------|---------------------------------------------------|
+| `infrastructure/aws`  | Terraform scripts for AWS resource management     |
+| `repository`          | Library of feature declarations for Feast        |
+| `server`              | FastAPI server interfacing with the Feast API    |
+| `ui`                  | React frontend application                        |
+| `tests`               | Test suite for the project                        |
+| `Makefile`            | Commands for running modules and other operations |
+| `pyproject.toml`      | Python project metadata and dependencies         |
+
+<br>
+
+## Resources
+- Official Feast Docs: [Feast Docs](https://docs.feast.dev/)
+- Official Feast API Reference: [API Reference](https://rtd.feast.dev/en/master/)

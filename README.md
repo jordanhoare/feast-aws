@@ -118,42 +118,49 @@ The project uses Terraform scripts located in the `infrastructure/aws` directory
 
 #### Configuring A Remote Backend For State Management
 
-These instructions assumes you do not already have a remote backend for Terraform already created, and provides a step by step command process to do so with AWS S3 and DynamoDB. 
+These instructions assumes you do not already have a remote backend for Terraform already created, and provides a step by step command process to do so with AWS S3 (to store state files) and DynamoDB (to state lock during team collaboration). 
 
 1. Initialize Terraform:
 
    ```bash
-   make init-terraform
+   make init-remote-infra
    ```
 
 2. Apply Terraform scripts to a remote backend:
 
    ```bash
-   make apply-terraform
-   ```
-
-   Confirm the action in the CLI when prompted.
-
-
-#### Configuring A Remote Backend For State Management
-
-1. Initialize Terraform:
-
-   ```bash
-   make init-terraform
-   ```
-
-2. Apply Terraform scripts to a remote backend:
-
-   ```bash
-   make apply-terraform
+   make apply-remote-infra
    ```
 
    Confirm the action in the CLI when prompted.
 
    **Important**
-   - Create a copy of the ./infastructure/aws/modules/backend/terraform.tfstate for safe keeping. 
-   - Write down new  
+   - Create a copy of the ./infastructure/aws/modules/backend/terraform.tfstate for safe keeping and ensure it isn't checked into Git.
+   
+   - Write down the outputted values to your environment variables (> .env)
+    ```bash
+    BUCKET_NAME=terraform-state-storage-00000
+    DYNAMODB_TABLE_NAME=terraform-state-lock-00000 
+    ```
+
+
+#### Configuring A Remote Backend For State Management
+
+> If you haven't configured a remote backend for state management, see previous step.
+
+1. Initialize Terraform for Feast Infastructure:
+
+   ```bash
+   make init-feast-infra
+   ```
+
+2. Apply Terraform scripts to a remote backend:
+
+   ```bash
+   make apply-feast-infra
+   ```
+
+   Confirm the action in the CLI when prompted.
 
 <br>
 
@@ -161,34 +168,34 @@ These instructions assumes you do not already have a remote backend for Terrafor
 
 The `Makefile` in the root directory contains several commands to simplify project operations:
 
-- `plan`: Runs `feast plan` to show the planned changes to the feature store.
+- `repository-plan`: Runs `feast plan` to show the planned changes to the feature store.
   
   ```bash
-  make plan
+  make repository-plan
   ```
 
-- `apply`: Applies the planned changes to the feature store.
+- `repository-apply`: Applies the planned changes to the feature store.
 
   ```bash
-  make apply
+  make repository-apply
   ```
 
-- `serve`: Serves the Feast feature store for local development.
+- `run-server`: Runs the FastAPI server.
 
   ```bash
-  make serve
+  make run-server
   ```
 
-- `run_server`: Runs the FastAPI server.
+- `run-client`: Starts the React client application (polling the FastAPI server).
 
   ```bash
-  make run_server
+  make run-client
   ```
 
-- `run_client`: Starts the React client application.
+- `lint-format`: Performs recommend linting and formatting of python libraries.
 
   ```bash
-  make run_client
+  make run-client
   ```
 
 Each command is tailored to abstract complex CLI operations into simpler make commands, enhancing the development and deployment experience.
@@ -202,13 +209,13 @@ After setting up the infrastructure and understanding the Makefile commands, you
 1. Start the FastAPI server:
 
    ```bash
-   make run_server
+   make run-server
    ```
 
 2. In a separate terminal, start the React client application:
 
    ```bash
-   make run_client
+   make run-client
    ```
 
 You should now have the FastAPI server, React client, and optionally the Feast UI running, ready for development and testing.

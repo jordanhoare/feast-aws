@@ -4,10 +4,10 @@ export
 export TF_BACKEND_DIR="infrastructure/aws/modules/backend"
 export DEV_ENV_DIR="infrastructure/aws/environments/dev"
 
-init-terraform:
+init-remote-infra:
 	cd $(TF_BACKEND_DIR) && terraform init
 
-apply-terraform:
+apply-remote-infra:
 	cd $(TF_BACKEND_DIR) && terraform apply -auto-approve
 
 init-feast-infra:
@@ -22,10 +22,10 @@ repository-plan:
 repository-apply:
 	poetry run feast -c repository apply
 
-run_server:
+run-server:
 	poetry run python -m server
 
-run_client:
+run-client:
 	cd ui && yarn start
 
 lint-format:

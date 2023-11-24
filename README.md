@@ -114,25 +114,46 @@ poetry install
 
 The project uses Terraform scripts located in the `infrastructure/aws` directory to manage AWS resources.
 
-1. Navigate to the infrastructure directory:
+
+
+#### Configuring A Remote Backend For State Management
+
+These instructions assumes you do not already have a remote backend for Terraform already created, and provides a step by step command process to do so with AWS S3 and DynamoDB. 
+
+1. Initialize Terraform:
 
    ```bash
-   cd infrastructure/aws
+   make init-terraform
    ```
 
-2. Initialize Terraform:
+2. Apply Terraform scripts to a remote backend:
 
    ```bash
-   terraform init
-   ```
-
-3. Apply Terraform scripts to create resources:
-
-   ```bash
-   terraform apply
+   make apply-terraform
    ```
 
    Confirm the action in the CLI when prompted.
+
+
+#### Configuring A Remote Backend For State Management
+
+1. Initialize Terraform:
+
+   ```bash
+   make init-terraform
+   ```
+
+2. Apply Terraform scripts to a remote backend:
+
+   ```bash
+   make apply-terraform
+   ```
+
+   Confirm the action in the CLI when prompted.
+
+   **Important**
+   - Create a copy of the ./infastructure/aws/modules/backend/terraform.tfstate for safe keeping. 
+   - Write down new  
 
 <br>
 

@@ -1,4 +1,4 @@
-version: '1.0'
+version: '3.8'
 
 services:
 
@@ -6,17 +6,21 @@ services:
     build:
       context: .
       dockerfile: server/Dockerfile
+    image: backend
     ports:
       - "8000:8000"
     env_file:
       - ./.env # Temporary
+    volumes:
+        - ./server:/app/server
+        - ./repository:/app/repository
 
   frontend:
     build:
       context: .
       dockerfile: ui/Dockerfile
+    image: frontend
     ports:
       - "3000:3000"
     depends_on:
       - backend
-

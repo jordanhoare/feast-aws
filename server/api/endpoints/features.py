@@ -1,22 +1,24 @@
-from pathlib import Path
-import pandas as pd
-from json import loads, dumps
-from fastapi import APIRouter
-from feast import FeatureStore, RepoConfig
 from datetime import datetime, timedelta
+from json import loads
+from pathlib import Path
+
+import pandas as pd
+from fastapi import APIRouter
+from feast import FeatureStore
+
 from server.core.logger import logger
 
 router = APIRouter()
 
 current_file_path = Path(__file__).resolve()
-repository_path = current_file_path.parents[3] / 'repository'
+repository_path = current_file_path.parents[3] / "repository"
 
 store = FeatureStore(repo_path=repository_path)
 
 
-@router.get('/')
+@router.get("/")
 def get_features():
-    logger.info('Fetching features for entity')
+    logger.info("Fetching features for entity")
     features = ["driver_hourly_stats:conv_rate", "driver_hourly_stats:acc_rate"]
 
     entity_df = pd.DataFrame(

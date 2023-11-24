@@ -16,6 +16,32 @@ python-dotenv = "^1.0.0"
 pandas = "1.4.3"
 s3fs = "^2023.10.0"
 
+[tool.poetry.dev-dependencies]
+mypy = "^1.7.1"
+mypy-extensions = "^1.0.0"
+black = "^23.11.0"
+flake8 = "^6.1.0"
+isort = "^5.12.0"
+boto3-stubs = "^1.29.6"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+    | \.git          # root of the project
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''

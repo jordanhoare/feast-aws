@@ -3,7 +3,6 @@ import uvicorn
 from .core.application import create_api
 from .core.config import get_settings
 
-
 if __name__ == "__main__":
     api = create_api()
     settings = get_settings()

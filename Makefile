@@ -16,20 +16,20 @@ init-feast-infra:
 apply-feast-infra:
 	cd $(DEV_ENV_DIR) &&  terraform apply -auto-approve
 
-plan:
+repository-plan:
 	poetry run feast -c repository plan
 
-apply:
+repository-apply:
 	poetry run feast -c repository apply
-
-serve:
-	poetry run feast -c repository serve
-
-ui:
-	poetry run feast -c repository ui
 
 run_server:
 	poetry run python -m server
 
 run_client:
 	cd ui && yarn start
+
+lint-format:
+	poetry run mypy server repository tests
+	poetry run isort server/ repository/ tests/
+	poetry run black server repository tests
+	poetry run flake8 server/ repository/ tests/

@@ -288,24 +288,20 @@ This section outlines the planned development features for the Feast-based machi
 - [ ] **React App Development**
   - [ ] Develop the UI service using the Feast NPM package.
   - [ ] Ensure effective communication with the backend service.
-  - [ ] Implement user-friendly and responsive UI design.
 
 - [ ] **Deployment Strategy**
   - [ ] Plan and execute the deployment of the React app.
   - [ ] Consider using AWS Amplify or S3 with CloudFront.
-  - [ ] Ensure secure and efficient routing to the backend service.
 
 ### Infrastructure as Code with Terraform
 
 - [ ] **AWS Infrastructure Provisioning**
   - [ ] Use Terraform for provisioning AWS infrastructure.
   - [ ] Implement IAM roles, permissions, and service deployments.
-  - [ ] Regularly review and update infrastructure configurations.
 
 - [ ] **Remote State Management**
-  - [ ] Set up Terraform for remote state management in S3.
-  - [ ] Facilitate team collaboration on infrastructure changes.
-  - [ ] Ensure security and consistency of Terraform states.
+  - [x] Set up Terraform for remote state management in S3.
+  - [x] Facilitate team collaboration on infrastructure changes with DynamoDB.
 
 ### CI/CD with GitHub Actions
 

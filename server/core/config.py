@@ -1,12 +1,13 @@
-from pydantic import BaseSettings
 from functools import lru_cache
+
 from dotenv import load_dotenv
+from pydantic import BaseSettings
 
 load_dotenv()
 
 
 class LocalSettings(BaseSettings):
-    SERVICE_NAME: str = 'service_name'
+    SERVICE_NAME: str = "service_name"
     SERVER_HOST: str = "0.0.0.0"
     SERVER_PORT: int = 8000
     SERVER_WORKERS: int = 1

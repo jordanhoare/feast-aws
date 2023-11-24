@@ -5,8 +5,8 @@ from datetime import timedelta
 from feast import FeatureView, Field
 from feast.types import Float32
 
-from common.sources import driver_stats
 from common.entities import driver
+from common.sources import driver_stats
 
 conv_rate = Field(name="conv_rate", dtype=Float32)
 acc_rate = Field(name="acc_rate", dtype=Float32)

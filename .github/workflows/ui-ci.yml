@@ -1,0 +1,16 @@
+name: UI CI
+
+on:
+  push:
+    branches: [ main, dev ]
+    paths:
+      - 'ui/**'
+  pull_request:
+    branches: [ main, dev ]
+    paths:
+      - 'ui/**'
+
+jobs:
+  build-and-test-ui:
+    runs-on: ubuntu-latest
+    # UI specific CI steps...

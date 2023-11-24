@@ -1,0 +1,20 @@
+name: Code Quality Checks
+
+on: 
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  lint-and-security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Run Linters
+      run: |
+        # Add other linters for UI as needed
+
+    - name: Run Security Scan
+      run: |
+        # Integrate SonarQube or similar tools

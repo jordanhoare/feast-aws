@@ -1,0 +1,12 @@
+name: UI CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'ui/**'
+
+jobs:
+  deploy-ui:
+    runs-on: ubuntu-latest
+    # UI specific CD steps...

@@ -37,7 +37,10 @@ lint-format:
 	poetry run black server repository tests
 	poetry run flake8 server/ repository/ tests/
 
-ui-build-run:
-	cd ui && docker build .
-	cd ui && docker run -d -p 3000:80
+build-run-ui:
+	docker build -f ui/Dockerfile -t ui .
+	docker run -d -p 3000:80 ui
 
+build-run-server:
+	docker build -f server/Dockerfile -t server .
+	docker run -d -p 8000:8080 --env-file .env server

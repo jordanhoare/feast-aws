@@ -1,9 +1,9 @@
 FROM node:16.20-slim AS build
 
 WORKDIR /usr/src/app
-COPY package.json yarn.lock ./
+COPY ui/package.json ui/yarn.lock ./
 RUN yarn install
-COPY . .
+COPY ui .
 RUN yarn build
 
 

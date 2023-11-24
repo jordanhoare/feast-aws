@@ -140,9 +140,14 @@ These instructions assumes you do not already have a remote backend for Terrafor
    - Write down the outputted values to your environment variables (> .env)
     ```bash
     BUCKET_NAME=terraform-state-storage-00000
-    DYNAMODB_TABLE_NAME=terraform-state-lock-00000 
+    DYNAMODB_TABLE_NAME=terraform-state-lock-00000
+
+    # (Optional) Refresh your .env variables
+    $ source .env 
     ```
 
+
+<br>
 
 #### Configuring A Remote Backend For State Management
 

@@ -7,6 +7,9 @@ export DEV_ENV_DIR="infrastructure/aws/environments/dev"
 init-remote-infra:
 	cd $(TF_BACKEND_DIR) && terraform init
 
+plan-remote-infra:
+	cd $(TF_BACKEND_DIR) && terraform plan
+
 apply-remote-infra:
 	cd $(TF_BACKEND_DIR) && terraform apply -auto-approve
 

@@ -343,7 +343,7 @@ This section outlines the planned development features for the Feast-based machi
 
 - [ ] **CI/CD for Backend Service (FastAPI)**
   - [ ] Set up automated build and test pipelines for every commit and pull request.
-  - [ ] Configure Docker containerization for the FastAPI service.
+  - [x] Configure Docker containerization for the FastAPI service.
   - [ ] Automate deployment to AWS EKS or other chosen environments upon successful tests and reviews.
 
 - [ ] **CI/CD for Frontend Service (React App)**

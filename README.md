@@ -211,6 +211,8 @@ Each command is tailored to abstract complex CLI operations into simpler make co
 
 After setting up the infrastructure and understanding the Makefile commands, you can start the various components of the project:
 
+#### Individual Services
+
 1. Start the FastAPI server:
 
    ```bash
@@ -223,7 +225,29 @@ After setting up the infrastructure and understanding the Makefile commands, you
    make run-client
    ```
 
-You should now have the FastAPI server, React client, and optionally the Feast UI running, ready for development and testing.
+#### A Composed Docker Desktop Container
+
+1. Build and run the contains on a single network locally:
+
+   ```bash
+   make compose
+   ```
+
+#### Individual Containers
+
+1. Build and start the FastAPI server:
+
+   ```bash
+   make build-run-server
+   ```
+
+2. Build and start the React client application:
+
+   ```bash
+   make build-run-ui
+   ```
+
+You should now have the FastAPI server, and the Feast UI running, ready for development and testing.
 
 <br>
 

@@ -36,3 +36,8 @@ lint-format:
 	poetry run isort server/ repository/ tests/
 	poetry run black server repository tests
 	poetry run flake8 server/ repository/ tests/
+
+ui-build-run:
+	cd ui && docker build .
+	cd ui && docker run -d -p 3000:80
+

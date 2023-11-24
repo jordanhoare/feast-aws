@@ -44,3 +44,10 @@ build-run-ui:
 build-run-server:
 	docker build -f server/Dockerfile -t server .
 	docker run -d -p 8000:8080 --env-file .env server
+
+compose:
+	docker-compose --env-file .env up -d
+
+clean-up:
+	docker volume prune
+	docker system prune

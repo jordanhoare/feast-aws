@@ -41,13 +41,6 @@ Overview of the project architecture.
 
 <br>
 
-![Architecture2](docs/aws_architecture.png)
-
-
-<br>
-
-
-
 ## Technology Stack
 
 This section provides an overview of the technology stack used in this project, with links to the official websites or repositories for more information. Each technology has been selected to ensure the best performance, scalability, and ease of use for our machine learning workflow implementation on AWS.

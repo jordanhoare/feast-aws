@@ -65,7 +65,7 @@ def create_feature_store(
 <br>
 
 **Server Execution**
-The `serve` function in the FeatureStore class handles the actual server startup, configuring and launching a local feature server.
+The `serve` method in the FeatureStore class handles the actual server startup, configuring and launching a local feature server.
 
 Source: [FeatureStore.serve()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/feature_store.py#L2222)
 ```py
@@ -144,13 +144,13 @@ def start_server(
 
 In a production environment, scaling the out-of-the-box serve command poses several challenges:
 
-### Configuration Management
+#### Configuration Management
 Consistency of the feature_store.yaml across different services and instances is crucial. Any discrepancy can lead to inconsistent feature serving.
 
-### Scalability
+#### Scalability
 The default server setup may not be optimized for high-traffic scenarios, requiring a more robust and scalable server architecture.
 
-### Security and Access Control
+#### Security and Access Control
 Ensuring secure access to the feature store and managing permissions can be complex in a distributed environment.
 
 <br>

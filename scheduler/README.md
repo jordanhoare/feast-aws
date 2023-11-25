@@ -1,4 +1,4 @@
-## Scheduler
+# Scheduler
 
 ## Feast CLI: `materialize`
 
@@ -87,13 +87,24 @@ def materialize(
 
 ## Caveats
 
-- Every instance of FeatureStore requires access to a `feature_store.yaml` configuration file.
-- In a production environment, this file needs to be accessible to any service or application that initializes a FeatureStore instance.
+Every instance of FeatureStore requires access to a `feature_store.yaml` configuration file. This file needs to be accessible to any service or application that initializes a FeatureStore instance - making consistency of the `feature_store.yaml` across different services and instances crucial. 
+
+In a production environment, especially one that scales and evolves over time, it's not practical or efficient to include every model serving service or scheduler service within a single monorepo for the sole purpose of accessing the feature_store.yaml. 
 
 <br>
 
+### Implications for Materialization and Feature Access
+
+- **Materialization Jobs**: For materialization jobs, the scheduler (in this case Airflow) needs access to the `feature_store.yaml` to execute materialization scripts correctly.
+
+- **Feature Retrieval**: Services that need to retrieve online feature data also require access to the `feature_store.yaml` to understand the structure and definitions of the features.
+
+<br>
+
+## Addressing Accessibility Challenges
+
 ### Option 1: Scheduler Directly Using `feature_store.yaml`
-For this approach, you would integrate a scheduler like Apache Airflow directly with Feast. The scheduler would need access to the feature_store.yaml and the Feast SDK to run materialization jobs.
+For this approach, you would integrate a scheduler like Apache Airflow directly with Feast. The scheduler would need access to the feature_store.yaml and the Feast SDK to run materialization jobs.  This would require any scheduler to be maintained within the Feature Store repository, alongside it's definitions. 
 
 ```
 feast-aws
@@ -120,7 +131,7 @@ feast-aws
 <br>
 
 ### Option 2: Scheduler Communicating with FastAPI Server
-In this approach, the scheduler makes HTTP requests to your FastAPI server, which then interacts with Feast. The FastAPI server acts as an intermediary between the scheduler and Feast.
+In this approach, the scheduler makes HTTP requests to your FastAPI server, which then interacts with Feast. The FastAPI server acts as an intermediary between the scheduler and Feast. 
 
 ```
 feast-aws

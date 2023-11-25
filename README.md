@@ -81,13 +81,21 @@ This guide will walk you through setting up and running the feast-aws project. T
 <br>
 
 ### Requirements
+
 Before starting, ensure you have the following installed:
 
+#### Pre-requisites
 - [Git](https://git-scm.com/) for command-line interface
-- [Poetry](https://python-poetry.org/) for dependency management and packaging
 - [Docker](https://docs.docker.com/get-docker/) for developing, shipping, and running applications
-- [Yarn](#) for the React UI
-- [Terraform](#) for infastructure management
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured with [credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html#cli-configure-quickstart-creds) via `aws configure`
+- [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) for infastructure management
+- [Python v3.10.0+](hhttps://www.python.org/downloads/) 
+- [Poetry](https://python-poetry.org/) for Python dependency and package management
+- [Node.js v16.0+](https://nodejs.org/en/download) for JavaScript runtime environment
+- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) for JavaScript dependency and package management
+
+#### Caveats
+- **Windows**: You'll likely need a [WSL 2 backend on Windows](https://docs.docker.com/desktop/wsl/) to develop with.
 
 <br>
 
@@ -105,8 +113,9 @@ poetry install
 
 ### Setting Up Infrastructure
 
-The project uses Terraform scripts located in the `infrastructure/aws` directory to manage AWS resources.
+> If you haven't configured your AWS credentials, check the linked steps in [Pre-requisites](#pre-requisitese)
 
+The project uses Terraform scripts located in the `infrastructure/aws` directory to manage AWS resources.
 
 
 #### Configuring A Remote Backend For State Management

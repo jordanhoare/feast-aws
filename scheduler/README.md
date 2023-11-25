@@ -23,10 +23,10 @@ The `materialize_command` function in the CLI handler initiates the materializat
 
 Source: [cli.materialize_command()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/cli.py#L531)
 ```py
-... # Omitted for brevity
 def materialize_command(
     ctx: click.Context, start_ts: str, end_ts: str, views: List[str]
 ):
+    ... # Omitted for brevity
     store = create_feature_store(ctx)
     store.materialize(
         feature_views=None if not views else views,
@@ -65,7 +65,6 @@ def materialize(
     end_date: datetime,
     feature_views: Optional[List[str]] = None,
 ) -> None:
-    """Materialize data from the offline store into the online store."""
     ... # Omitted for brevity
     provider = self._get_provider()
     feature_views_to_materialize = self._get_feature_views_to_materialize(feature_views)

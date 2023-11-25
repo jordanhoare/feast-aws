@@ -21,7 +21,7 @@ When the `materialize` command is executed, it triggers a series of operations:
 **Initialization Step**
 The `materialize_command` function in the CLI handler initiates the materialization process. It creates a `FeatureStore` instance using the repository configuration.
 
-Source: '[Registry.apply_materialization()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/infra/registry/registry.py#L464C9-L464C30)'
+Source: [cli.materialize_command()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/cli.py#L531)
 ```py
 ... # Omitted for brevity
 def materialize_command(
@@ -40,7 +40,7 @@ def materialize_command(
 **Feature Store Creation**
 The `create_feature_store` function is responsible for setting up the FeatureStore instance. It prepares the environment and configuration necessary for the feature store to operate.
 
-Source: '[repo_operations.create_feature_store()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/repo_operations.py#L334)'
+Source: [repo_operations.create_feature_store()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/repo_operations.py#L334)
 ```py
 def create_feature_store(
     ctx: click.Context,
@@ -57,7 +57,7 @@ def create_feature_store(
 **Materialization Execution**
 The `materialize` function in the FeatureStore class is where the actual materialization process takes place. It iterates over each feature view and instructs the provider to transfer data from the offline store to the online store.
 
-Source: '[FeatureStore.materialize()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/feature_store.py#L1342C9-L1342C20)'
+Source: [FeatureStore.materialize()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/feature_store.py#L1342C9-L1342C20)
 ```py
 def materialize(
     self,

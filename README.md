@@ -31,18 +31,18 @@ The feast-aws project is an solution designed to streamline feature management i
 
 The project encapsulates a full-feature lifecycle management process, from defining and storing features to serving them for ML models in production. It combines the power of Feast with the scalability and robustness of AWS, creating a versatile environment for managing and deploying features at scale.
 
-Your approach of using a FastAPI server as an interface to the Feast FeatureStore is a valid and scalable way to serve feature data. This server, which has access to the feature_store.yaml, can expose HTTP endpoints that internally call get_online_features() and return the results.
+For an introduction to using Feast, refer to the official [Feast Introduction](https://docs.feast.dev/). Additionally, Feast SDK explainations and design decisions/considerations are detailed in each modules readme:
+- [Feature store repository](https://github.com/jordanhoare/feast-aws/blob/master/repository/README.md)
+- [Feature store server](https://github.com/jordanhoare/feast-aws/blob/master/server/README.md)
+- [Feature store materialisation](https://github.com/jordanhoare/feast-aws/blob/master/scheduler/README.md)
 
-This setup essentially creates a RESTful API layer over your Feast FeatureStore, allowing external services and applications to fetch feature data without direct access to the feature_store.yaml or needing to initialize a FeatureStore instance themselves.
-It abstracts the complexity and implementation details of Feast, providing a simple and consistent interface for feature retrieval.
 
 <br>
 
 ## Approach
 The approach of using a FastAPI server as an interface to the Feast FeatureStore is a scalable way to serve feature data. The server, which has context of the `feature_store.yaml`, exposes HTTP(S) endpoints that internally call the Feast API to return the results.
 
-This setup essentially creates a RESTful API layer over your Feast FeatureStore, allowing external services and applications to fetch feature data without direct access to the feature_store.yaml or needing to initialize a FeatureStore instance themselves.
-It abstracts the complexity and implementation details of Feast, providing a simple and consistent interface for feature retrieval.
+This setup essentially creates a RESTful API layer over your Feast FeatureStore, allowing external services and applications to fetch feature data without direct access to the feature_store.yaml or needing to initialize a FeatureStore instance themselves. It abstracts the complexity and implementation details of Feast, providing a simple and consistent interface for feature retrieval.
 
 <br>
 

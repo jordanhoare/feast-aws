@@ -118,9 +118,6 @@ def materialize_single_feature_view(
         raise e
 ```
 
-
-
-
 <br>
 
 ## Caveats

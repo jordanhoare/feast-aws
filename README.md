@@ -102,7 +102,7 @@ Before starting, ensure you have the following installed:
 - [Docker](https://docs.docker.com/get-docker/) for developing, shipping, and running applications
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured with [credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html#cli-configure-quickstart-creds) via `aws configure`
 - [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) for infastructure management
-- [Python v3.10.0+](hhttps://www.python.org/downloads/) 
+- [Python v3.10.0+](hhttps://www.python.org/downloads/)  a
 - [Poetry](https://python-poetry.org/) for Python dependency and package management
 - [Node.js v16.0+](https://nodejs.org/en/download) for JavaScript runtime environment
 - [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) for JavaScript dependency and package management

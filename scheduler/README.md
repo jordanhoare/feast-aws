@@ -8,9 +8,11 @@ When the `materialize` command is executed, it triggers a series of operations:
 
 1. **Initialization**: The command starts by initializing a `FeatureStore` instance. This is done by reading the configuration from the `feature_store.yaml` file, which contains all the necessary settings and definitions for the feature store.
 
-2. **Materialization Process**: The core of the materialization process involves reading data from the specified time range (between `start_date` and `end_date`) from the offline store and writing it to the online store. This is done for each feature view specified in the command or for all registered feature views if none are specified.
+2. **Materialization Process**: The core of the materialization process involves reading data from the specified time range (between `start_date` and `end_date`) from the offline store and writing it to the online store. This is done for each feature view specified in the command or for all registered feature views if none are specified. 
 
-3. **Provider Interaction**: The `FeatureStore` instance interacts with the provider to execute the materialization for each feature view. The provider is responsible for the actual data transfer between the offline and online stores.
+3. **Provider Interaction**: The `FeatureStore` instance interacts with the provider (in this case Snowflake - the offline store) to execute the materialization for each feature view. Snowflake, as the offline store, stores the historical feature data. This data is used for training machine learning models or for materialization into the online store. Any compute-intensive operations, like aggregating or transforming historical data, are performed within Snowflake.
+
+The offline store provider is responsible for the actual data transfer between the offline and online stores. Snowflake (our offline store) in this case acts as the compute engine and storage for the offline features.  , so it handles the data processing and storage, but it's the Python script that orchestrates what data to fetch and where to store it.
 
 4. **Registry Update**: After the materialization is complete, the `FeatureStore` updates the registry with information about the materialized data. This step is crucial for tracking the state and history of materialized data in the feature store.
 
@@ -55,7 +57,7 @@ def create_feature_store(
 <br>
 
 **Materialization Execution**
-The `materialize` function in the FeatureStore class is where the actual materialization process takes place. It iterates over each feature view and instructs the provider to transfer data from the offline store to the online store.
+The `materialize` function in the FeatureStore class is where the actual materialization process is called. It iterates over each feature view and instructs the provider to compute the values from historic data offline store to the online store.
 
 Source: [FeatureStore.materialize()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/feature_store.py#L1342C9-L1342C20)
 ```py
@@ -84,53 +86,86 @@ def materialize(
 
 <br>
 
+**Materialization Engine**
+The `materialize_single_feature_view()` method uses a Provide passthrough to specify which engine (in our case [Snowflake](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/infra/materialization/snowflake_engine.py#L211)) to compute the transformation on.
+
+Source: [PassthroughProvider.materialize_single_feature_view()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/infra/passthrough_provider.py#L226)
+
+```python
+def materialize_single_feature_view(
+    self,
+    config: RepoConfig,
+    feature_view: FeatureView,
+    start_date: datetime,
+    end_date: datetime,
+    registry: BaseRegistry,
+    project: str,
+    tqdm_builder: Callable[[int], tqdm],
+) -> None:
+    ... # Omitted for brevity
+    task = MaterializationTask(
+        project=project,
+        feature_view=feature_view,
+        start_time=start_date,
+        end_time=end_date,
+        tqdm_builder=tqdm_builder,
+    )
+    jobs = self.batch_engine.materialize(registry, [task]) # Where the batch engine in our case in Snowflake
+    assert len(jobs) == 1
+    if jobs[0].status() == MaterializationJobStatus.ERROR and jobs[0].error():
+        e = jobs[0].error()
+        assert e
+        raise e
+```
+
+
+
+
+<br>
+
 ## Caveats
 
-Every instance of FeatureStore requires access to a `feature_store.yaml` configuration file. This file needs to be accessible to any service or application that initializes a FeatureStore instance - making consistency of the `feature_store.yaml` across different services and instances crucial. 
+In essence, the environment running the Feast FeatureStore is the mediator between Snowflake (the offline store) and the online store. It retrieves data from Snowflake, processes it if necessary, and then transfers it to the online store for quick access during online feature serving.
 
-In a production environment, especially one that scales and evolves over time, it's not practical or efficient to include every model serving service or scheduler service within a single monorepo for the sole purpose of accessing the feature_store.yaml. 
+- Snowflake, as the offline store, stores the historical feature data. This data is used for training machine learning models or for materialization into the online store. Any compute-intensive operations, like aggregating or transforming historical data, are performed within Snowflake.
 
-<br>
+- When you run a materialization job in Feast (like materialize_incremental()), Feast interacts with Snowflake to retrieve the necessary feature data.
+Feast then takes this data and writes it to the online store. The online store could be a different system, such as Redis, DynamoDB, or another database optimized for low-latency access.
+Data Transfer:
 
-### Implications for Materialization and Feature Access
-
-- **Materialization Jobs**: For materialization jobs, the scheduler (in this case Airflow) needs access to the `feature_store.yaml` to execute materialization scripts correctly.
-
-- **Feature Retrieval**: Services that need to retrieve online feature data also require access to the `feature_store.yaml` to understand the structure and definitions of the features.
+- The actual transfer of materialized data from Snowflake (offline store) to the online store is managed by Feast. Snowflake provides the data, but it's Feast that retrieves this data and then pushes it to the online store.  This process involves reading the relevant data from Snowflake, possibly processing it further if needed, and then writing it to the online store.
 
 <br>
 
-## Addressing Accessibility Challenges
+## Solutions
 
-### Option 1: Scheduler Directly Using `feature_store.yaml`
-For this approach, you would integrate a scheduler like Apache Airflow directly with Feast. The scheduler would need access to the feature_store.yaml and the Feast SDK to run materialization jobs.  This would require any scheduler to be maintained within the Feature Store repository, alongside it's definitions. 
+**Scheduler's Role:**
+- The scheduler (like Apache Airflow or Prefect) is responsible for triggering Feast materialization jobs according to a defined schedule or set of conditions.
+- It does not interact directly with the feature_store.yaml file or the Feast API. Instead, it executes jobs or scripts that do.
 
-```
-feast-aws
-├─ .github
-│  └─ workflows
-│     └─ ...
-├─ infrastructure
-│  └─ aws
-│     └─ ...
-├─ repository
-│  ├─ feature_store.yaml
-│  └─ feast_jobs # Directory for Feast materialization scripts
-│     └─ daily_materialization.py # Example script for daily materialization
-├─ scheduler # Apache Airflow or similar scheduler
-│  ├─ dags # Airflow DAGs directory
-│  │  └─ feast_materialization_dag.py # DAG for triggering Feast materialization
-│  └─ ...
-├─ server
-│  └─ ...
-└─ ui
-   └─ ...
-```
+**Jobs/Scripts Executed by the Scheduler:**
+- The actual Python script or Feast job that is triggered by the scheduler needs access to the feature_store.yaml.
+- This script is responsible for initializing the FeatureStore instance and performing operations like materialize or materialize_incremental.
+- The script should be executed in an environment where Feast is installed and configured, with access to the necessary configuration files and credentials to interact with both the offline and online stores.
 
 <br>
 
-### Option 2: Scheduler Communicating with FastAPI Server
-In this approach, the scheduler makes HTTP requests to your FastAPI server, which then interacts with Feast. The FastAPI server acts as an intermediary between the scheduler and Feast. 
+### Option 1: FastAPI Service as a Feast Materialization Handler
+
+**Design Overview:**
+- The FastAPI service acts as an intermediary between the scheduler and Feast. It exposes an endpoint that, when hit by an HTTP(S) request, triggers the Feast materialization process.
+- The scheduler is responsible for sending HTTP(S) requests to the FastAPI service based on a predefined schedule or conditions. This could be a simple cron job, Apache Airflow DAG, or any other scheduling tool.
+- In this approach, the scheduler makes HTTP requests to your FastAPI server, which calls Feast's FeatureStore `materialize` method. The FastAPI server acts as an intermediary between the scheduler and Feast. 
+
+**Considerations:**
+- Depending on the scale, ensure that the FastAPI service has access to sufficient resources (CPU, memory) to handle the Feast operations without performance degradation.
+
+**Advantages:**
+- Separating the scheduler from direct Feast operations enhances modularity and maintainability.
+- FastAPI's asynchronous nature allows for handling multiple materialization requests efficiently, which is crucial for high-load scenarios.
+- Having a single point for Feast operations simplifies management, logging, and monitoring.
+
+**Proposed Implementation:**
 
 ```
 feast-aws
@@ -143,12 +178,14 @@ feast-aws
 ├─ repository
 │  └─ feature_store.yaml
 ├─ server
-│  ├─ main.py # FastAPI main application file
-│  ├─ feast_operations # Directory for Feast operation handlers
-│  │  └─ materialize.py # Handler for materialization endpoint
+│  ├─ main.py
+│  ├─ handlers
+│  │  └─ materialize.py # Handler for Feast materialization tasks
+│  ├─ endpoints
+│  │  └─ materialize.py # An endpoint for the scheduler to trigger a task
 │  └─ ...
-├─ scheduler # Apache Airflow or similar scheduler
-│  ├─ dags # Airflow DAGs directory
+├─ scheduler
+│  ├─ dags # DAGs directory
 │  │  └─ feast_http_request_dag.py # DAG for making HTTP requests to FastAPI server
 │  └─ ...
 └─ ui

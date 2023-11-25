@@ -31,6 +31,19 @@ The feast-aws project is an solution designed to streamline feature management i
 
 The project encapsulates a full-feature lifecycle management process, from defining and storing features to serving them for ML models in production. It combines the power of Feast with the scalability and robustness of AWS, creating a versatile environment for managing and deploying features at scale.
 
+Your approach of using a FastAPI server as an interface to the Feast FeatureStore is a valid and scalable way to serve feature data. This server, which has access to the feature_store.yaml, can expose HTTP endpoints that internally call get_online_features() and return the results.
+
+This setup essentially creates a RESTful API layer over your Feast FeatureStore, allowing external services and applications to fetch feature data without direct access to the feature_store.yaml or needing to initialize a FeatureStore instance themselves.
+It abstracts the complexity and implementation details of Feast, providing a simple and consistent interface for feature retrieval.
+
+<br>
+
+## Approach
+The approach of using a FastAPI server as an interface to the Feast FeatureStore is a scalable way to serve feature data. The server, which has context of the `feature_store.yaml`, exposes HTTP(S) endpoints that internally call the Feast API to return the results.
+
+This setup essentially creates a RESTful API layer over your Feast FeatureStore, allowing external services and applications to fetch feature data without direct access to the feature_store.yaml or needing to initialize a FeatureStore instance themselves.
+It abstracts the complexity and implementation details of Feast, providing a simple and consistent interface for feature retrieval.
+
 <br>
 
 ## Architecture
@@ -380,109 +393,32 @@ This section outlines the planned development features for the Feast-based machi
 - Official Feast Docs: [Feast Docs](https://docs.feast.dev/)
 - Official Feast API Reference: [API Reference](https://rtd.feast.dev/en/master/)
 
+<br>
+
+## Repository Structure
+
 ```
 feast-aws
-├─ .github
+├─ .github # All of the project's CI/CD
 │  └─ workflows
-│     ├─ code-quality.yml
-│     ├─ infrastructure.yml
-│     ├─ server-cd.yml
-│     ├─ server-ci.yml
-│     ├─ ui-cd.yml
-│     └─ ui-ci.yml
-├─ .gitignore
-├─ Makefile
-├─ README.md
-├─ data
-│  └─ driver_stats.parquet
-├─ docs
-│  └─ aws_architecture.png
-├─ infrastructure
+│     └─ ...
+├─ infrastructure # Terraform modules for infastructure management
 │  └─ aws
 │     ├─ environments
 │     │  └─ dev
 │     │     ├─ main.tf
 │     │     ├─ outputs.tf
 │     │     └─ variables.tf
+│     │  └─ prod
+│     │     ├─ main.tf
+│     │     ├─ outputs.tf
+│     │     └─ variables.tf
 │     └─ modules
-│        ├─ backend
-│        │  ├─ main.tf
-│        │  ├─ outputs.tf
-│        │  └─ variables.tf
-│        ├─ eks
-│        │  ├─ main.tf
-│        │  ├─ outputs.tf
-│        │  └─ variables.tf
-│        ├─ elasticache
-│        │  ├─ main.tf
-│        │  ├─ outputs.tf
-│        │  └─ variables.tf
-│        ├─ rds
-│        │  ├─ main.tf
-│        │  ├─ outputs.tf
-│        │  └─ variables.tf
-│        ├─ s3
-│        │  ├─ main.tf
-│        │  ├─ outputs.tf
-│        │  └─ variables.tf
-│        └─ vpc
-│           ├─ main.tf
-│           ├─ outputs.tf
-│           └─ variables.tf
-├─ poetry.lock
-├─ pyproject.toml
+│        └─ ...
 ├─ repository
-│  ├─ common
-│  │  ├─ __init__.py
-│  │  ├─ entities.py
-│  │  └─ sources.py
-│  ├─ driver_stats
-│  │  ├─ __init__.py
-│  │  ├─ services.py
-│  │  ├─ transformations.py
-│  │  └─ views.py
 │  └─ feature_store.yaml
-├─ server
-│  ├─ Dockerfile
-│  ├─ __init__.py
-│  ├─ __main__.py
-│  ├─ api
-│  │  ├─ __init__.py
-│  │  └─ endpoints
-│  │     ├─ __init__.py
-│  │     ├─ features.py
-│  │     ├─ projects.py
-│  │     └─ registry.py
-│  └─ core
-│     ├─ __init__.py
-│     ├─ application.py
-│     ├─ config.py
-│     └─ logger.py
-├─ setup.cfg
-├─ tests
-│  └─ __init__.py
-└─ ui
-   ├─ .dockerignore
-   ├─ .gitignore
-   ├─ Dockerfile
-   ├─ README.md
-   ├─ package.json
-   ├─ public
-   │  ├─ favicon.ico
-   │  ├─ index.html
-   │  ├─ logo192.png
-   │  ├─ logo512.png
-   │  ├─ manifest.json
-   │  └─ robots.txt
-   ├─ src
-   │  ├─ App.css
-   │  ├─ App.js
-   │  ├─ App.test.js
-   │  ├─ index.css
-   │  ├─ index.js
-   │  ├─ logo.svg
-   │  ├─ reportWebVitals.js
-   │  └─ setupTests.js
-   └─ yarn.lock
-
+├─ server # The FastAPI service which is an instance of 'Feast.FeatureStore()'
+│  └─ ...
+└─ ui # A React App that uses Feast's NPM library and communicates with the FastAPI server
+   └─ ...
 ```

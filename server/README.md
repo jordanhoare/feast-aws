@@ -109,15 +109,7 @@ class FeastServeApplication(gunicorn.app.base.BaseApplication):
         self._options = options
         super().__init__()
 
-    def load_config(self):
-        for key, value in self._options.items():
-            if key.lower() in self.cfg.settings and value is not None:
-                self.cfg.set(key.lower(), value)
-
-        self.cfg.set("worker_class", "uvicorn.workers.UvicornWorker")
-
-    def load(self):
-        return self._app
+    ... # Omitted for brevity
         
 def start_server(
     store: "feast.FeatureStore",

@@ -1,13 +1,10 @@
 # Repository: 
 
-**Overview:**
-The `feast apply` command automates the setup and maintenance of the Feast feature store. It involves a series of coordinated steps that load configurations, prepare the registry and repository, and apply changes to the feature store's infrastructure and metadata, ensuring that the feature store is always in sync with the defined configurations.
-
 <br>
 
 ## Feast CLI: `feast apply`
 
-The `feast apply` command is a crucial part of the Feast workflow. It's responsible for configuring and updating the Feast feature store based on the definitions provided in the Feast configuration files. This process involves several key steps, each handled by specific functions within the Feast codebase.
+The `feast apply` command automates the setup and maintenance of the Feast feature store. It involves a series of coordinated steps that load configurations, prepare the registry and repository, and apply changes to the feature store's infrastructure and metadata, ensuring that the feature store is always in sync with the defined configurations.
 
 - Initially, the command creates an instance of `FeatureStore` using the YAML file configuration. This step is essential for initializing the feature store with the correct settings and parameters as defined by the user.
 - Subsequently, it invokes the `apply()` method on the `FeatureStore` instance. This method is the core of the `feast apply` command, where the actual application of configurations and updates to the feature store takes place.

@@ -3,26 +3,6 @@
 **Overview:**
 The `feast apply` command automates the setup and maintenance of the Feast feature store. It involves a series of coordinated steps that load configurations, prepare the registry and repository, and apply changes to the feature store's infrastructure and metadata, ensuring that the feature store is always in sync with the defined configurations.
 
-**Hypothesis**
-You can bypass the direct use of the feast apply CLI command and instead interact directly with a FeatureStore instance, potentially running as a service. This approach would involve programmatically managing the feature store's configuration and operations, which is essentially what the feast apply command automates.
-
-Theoretically, if you correctly set up a FeatureStore instance to be managed as a service, you could remove the requirement of having a feature_store.yml in every directory where you define or use features. Instead, you would only need the feature_store.yml configuration file on the server where the FeatureStore instance is running (in which case, you no longer need to maintain a 'feature_store.yml' or a list of sources (?) and can instead programmatically define this using a [RepoConfig](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/repo_config.py#L133) and [DataSource](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/data_source.py#L168).
-
-Ultimately with this approach, it is possible to create a custom that can published to a private repository/library that enables end users to simply pip install a library.  Under the hood the SDK can make HTTP calls to the Rest API service (service module in this repository).  Engineers then control what source are available in which environment programatically.
-
-**For example:**
-In a jupyter notebook on a private network:
-
-```python
-!pip install fs-sdk
-```
-
-```python
-import fs_sdk as fs
-
-sources: List = fs.get_file_source_list()
-```
-
 <br>
 
 ## Feast CLI: `feast apply`
@@ -160,4 +140,25 @@ def apply(
     self._registry.commit()
 ```
 
+<br>
 
+### CLI Replacement Hypothesis
+**Hypothesis**
+You can bypass the direct use of the feast apply CLI command and instead interact directly with a FeatureStore instance, potentially running as a service. This approach would involve programmatically managing the feature store's configuration and operations, which is essentially what the feast apply command automates.
+
+Theoretically, if you correctly set up a FeatureStore instance to be managed as a service, you could remove the requirement of having a feature_store.yml in every directory where you define or use features. Instead, you would only need the feature_store.yml configuration file on the server where the FeatureStore instance is running (in which case, you no longer need to maintain a 'feature_store.yml' or a list of sources (?) and can instead programmatically define this using a [RepoConfig](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/repo_config.py#L133) and [DataSource](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/data_source.py#L168).
+
+Ultimately with this approach, it is possible to create a custom that can published to a private repository/library that enables end users to simply pip install a library.  Under the hood the SDK can make HTTP calls to the Rest API service (service module in this repository).  Engineers then control what source are available in which environment programatically.
+
+**For example:**
+In a jupyter notebook on a private network:
+
+```python
+!pip install fs-sdk
+```
+
+```python
+import fs_sdk as fs
+
+sources: List = fs.get_file_source_list()
+```

@@ -132,25 +132,65 @@ def start_server(
 
 <br>
 
-## Caveats
+## Caveats in Scaling Feast's Serve Command
 
-In a production environment, scaling the out-of-the-box serve command poses several challenges:
+Scaling the out-of-the-box `serve` command in a production environment presents several challenges:
 
-#### Configuration Management
-Consistency of the feature_store.yaml across different services and instances is crucial. Any discrepancy can lead to inconsistent feature serving.
-
-#### Scalability
-The default server setup may not be optimized for high-traffic scenarios, requiring a more robust and scalable server architecture.
-
-#### Security and Access Control
-Ensuring secure access to the feature store and managing permissions can be complex in a distributed environment.
+- **Consistency is Key**: The `feature_store.yaml` configuration must be consistent across all services and instances. Any variation can lead to inconsistent feature serving, impacting reliability and trust in the system.
+- **Handling High Traffic**: The default server setup may not be fully optimized for high-traffic scenarios, potentially leading to performance bottlenecks.
+- **Secure Access**: Managing secure access and permissions in a distributed environment can be complex and requires careful planning.
 
 <br>
 
-### Implications and Solutions
+## Implications and Solutions
 
-To address these challenges, one solution is to create an abstraction layer using a FastAPI server that encapsulates a FeatureStore instance. This approach offers several advantages:
+To overcome these challenges, a viable solution is to create an abstraction layer using a FastAPI server that encapsulates a FeatureStore instance. This approach brings several benefits:
 
-1. Centralized Configuration: By hosting the feature_store.yaml on a central server, you ensure consistency across all instances.
-1. Enhanced Scalability: FastAPI provides more flexibility and scalability options compared to the default Feast server, allowing for better handling of high traffic and complex workloads.
-1. Improved Security: Integrating security measures and access control becomes more manageable with a dedicated server setup.
+1. **Centralized Configuration**: Hosting the `feature_store.yaml` on a central server ensures uniformity and consistency across all instances.
+2. **Enhanced Scalability**: FastAPI offers greater flexibility and scalability compared to the default Feast server. This allows for efficient handling of high traffic and complex workloads.
+3. **Streamlined Security**: Implementing security measures and access control is more straightforward with a dedicated server setup.
+
+### Customized Feature Serving
+Directly using the Feast API through this abstraction allows for the creation of custom endpoints, tailored to specific use cases. This approach enables the design of API routes and response formats that align closely with your application's needs, enhancing the efficiency and user experience.
+
+For instance, here are some examples of how Feast's out-of-the-box `serve` command can be extended and customized:
+
+### [Retrieving features](https://docs.feast.dev/reference/feature-servers/python-feature-server#retrieving-features)
+After the server starts, custom requests can be executed to retrieve features. This flexibility allows for more specific and efficient data retrieval.
+
+```bash
+$  curl -X POST \
+  "http://localhost:6566/get-online-features" \
+  -d '{
+    "features": [
+      "driver_hourly_stats:conv_rate",
+      "driver_hourly_stats:acc_rate",
+      "driver_hourly_stats:avg_daily_trips"
+    ],
+    "entities": {
+      "driver_id": [1001, 1002, 1003]
+    }
+  }'
+```
+
+<br>
+
+### [Pushing features to the online and offline stores](https://docs.feast.dev/reference/feature-servers/python-feature-server#pushing-features-to-the-online-and-offline-stores)
+The server also exposes endpoints for pushing data to the online and offline stores, enabling dynamic and real-time data updates.
+
+```bash
+curl -X POST \
+    "http://localhost:6566/push" 
+    -d '{
+    "push_source_name": "driver_stats_push_source",
+    "df": {
+            "driver_id": [1001],
+            "event_timestamp": ["2022-05-13 10:59:42+00:00"],
+            "created": ["2022-05-13 10:59:42"],
+            "conv_rate": [1.0],
+            "acc_rate": [1.0],
+            "avg_daily_trips": [1000]
+    },
+    "to": "online_and_offline"
+  }'
+```

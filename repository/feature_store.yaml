@@ -1,9 +1,30 @@
 # repository/feature_store.yaml
 
 project: feast_demo_aws
-provider: aws
 registry: s3://feast-workshop-sandbox/registry.pb
-online_store: null
+provider: aws
 offline_store:
-  type: file
+    type: snowflake.offline
+    account: ${SNOWFLAKE_ACCOUNT}
+    user: ${SNOWFLAKE_USERNAME}
+    password: ${SNOWFLAKE_PASSWORD}
+    role: ${SNOWFLAKE_ROLE:"ACCOUNTADMIN"}
+    warehouse: ${SNOWFLAKE_WAREHOUSE:"COMPUTE_WH"}
+    database: ${SNOWFLAKE_DATABASE:"FEAST"}
+batch_engine:
+    type: snowflake.engine
+    account: ${SNOWFLAKE_ACCOUNT}
+    user: ${SNOWFLAKE_USERNAME}
+    password: ${SNOWFLAKE_PASSWORD}
+    role: ${SNOWFLAKE_ROLE:"ACCOUNTADMIN"}
+    warehouse: ${SNOWFLAKE_WAREHOUSE:"COMPUTE_WH"}
+    database: ${SNOWFLAKE_DATABASE:"FEAST"}
+online_store:
+    type: snowflake.online
+    account: ${SNOWFLAKE_ACCOUNT}
+    user: ${SNOWFLAKE_USERNAME}
+    password: ${SNOWFLAKE_PASSWORD}
+    role: ${SNOWFLAKE_ROLE:"ACCOUNTADMIN"}
+    warehouse: ${SNOWFLAKE_WAREHOUSE:"COMPUTE_WH"}
+    database: ${SNOWFLAKE_DATABASE:"FEAST"}
 entity_key_serialization_version: 2

@@ -42,82 +42,102 @@ locals {
   }
 }
 
+
 // apply read_privileges defined above to reader_roles + admin_roles
-resource "snowflake_database_grant" "read_privileges" {
-  for_each = toset(local.read_privileges.database)
+resource "snowflake_grant_privileges_to_role" "read_privileges_database" {
+  for_each = { for role in concat(var.reader_roles, var.admin_roles) : role => local.read_privileges.database }
 
-  database_name = snowflake_database.db.name
-  privilege     = each.key
-  roles         = concat(var.reader_roles, var.admin_roles)
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.db.name
+  }
 }
 
-resource "snowflake_schema_grant" "read_privileges" {
-  provider = snowflake.SECURITYADMIN
-  for_each = toset(local.read_privileges.schema)
+resource "snowflake_grant_privileges_to_role" "read_privileges_schema" {
+  for_each = { for role in concat(var.reader_roles, var.admin_roles) : role => local.read_privileges.schema }
 
-  database_name = snowflake_database.db.name
-  on_future     = true
-  privilege     = each.key
-  roles         = concat(var.reader_roles, var.admin_roles)
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "SCHEMA"
+    object_name = snowflake_database.db.name
+  }
 }
 
-resource "snowflake_table_grant" "read_privileges" {
-  provider = snowflake.SECURITYADMIN
-  for_each = toset(local.read_privileges.table)
+resource "snowflake_grant_privileges_to_role" "read_privileges_table" {
+  for_each = { for role in concat(var.reader_roles, var.admin_roles) : role => local.read_privileges.table }
 
-  database_name = snowflake_database.db.name
-  on_future     = true
-  privilege     = each.key
-  roles         = concat(var.reader_roles, var.admin_roles)
-}
+  role_name  = each.key
+  privileges = each.value
 
-resource "snowflake_view_grant" "read_privileges" {
-  provider = snowflake.SECURITYADMIN
-  for_each = toset(local.read_privileges.view)
-
-  database_name = snowflake_database.db.name
-  on_future     = true
-  privilege     = each.key
-  roles         = concat(var.reader_roles, var.admin_roles)
-}
-
-// apply additional_admin_privileges defined above to admin_roles
-
-resource "snowflake_database_grant" "additional_admin_privileges" {
-  for_each = toset(local.additional_admin_privileges.database)
-
-  database_name = snowflake_database.db.name
-  privilege     = each.key
-  roles         = var.admin_roles
+  on_account_object {
+    object_type = "TABLE"
+    object_name = snowflake_database.db.name
+  }
 }
 
 
-resource "snowflake_schema_grant" "additional_admin_privileges" {
-  provider = snowflake.SECURITYADMIN
-  for_each = toset(local.additional_admin_privileges.schema)
+resource "snowflake_grant_privileges_to_role" "read_privileges_view" {
+  for_each = { for role in concat(var.reader_roles, var.admin_roles) : role => local.read_privileges.view }
 
-  database_name = snowflake_database.db.name
-  on_future     = true
-  privilege     = each.key
-  roles         = var.admin_roles
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "VIEW"
+    object_name = snowflake_database.db.name
+  }
 }
 
-resource "snowflake_table_grant" "additional_admin_privileges" {
-  provider = snowflake.SECURITYADMIN
-  for_each = toset(local.additional_admin_privileges.table)
+// apply read_privileges defined above to reader_roles + admin_roles
+resource "snowflake_grant_privileges_to_role" "additional_admin_privileges_schema" {
+  for_each = { for role in var.admin_roles : role => local.additional_admin_privileges.schema }
 
-  database_name = snowflake_database.db.name
-  on_future     = true
-  privilege     = each.key
-  roles         = var.admin_roles
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "SCHEMA"
+    object_name = snowflake_database.db.name
+  }
 }
 
-resource "snowflake_view_grant" "additional_admin_privileges" {
-  provider = snowflake.SECURITYADMIN
-  for_each = toset(local.additional_admin_privileges.view)
+resource "snowflake_grant_privileges_to_role" "additional_admin_privileges_table" {
+  for_each = { for role in var.admin_roles : role => local.additional_admin_privileges.table }
 
-  database_name = snowflake_database.db.name
-  on_future     = true
-  privilege     = each.key
-  roles         = var.admin_roles
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "TABLE"
+    object_name = snowflake_database.db.name
+  }
+}
+
+resource "snowflake_grant_privileges_to_role" "additional_admin_privileges_view" {
+  for_each = { for role in var.admin_roles : role => local.additional_admin_privileges.view }
+
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "VIEW"
+    object_name = snowflake_database.db.name
+  }
+}
+
+resource "snowflake_grant_privileges_to_role" "additional_admin_privileges_database" {
+  for_each = { for role in var.admin_roles : role => local.additional_admin_privileges.database }
+
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.db.name
+  }
 }

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     snowflake = {
       source = "Snowflake-Labs/snowflake"
-      version = "0.76.0"
+      version = "0.73.0" # 0.74+ are bad releases - https://github.com/Snowflake-Labs/terraform-provider-snowflake/issues/2131
     }
   }
 }
@@ -13,7 +13,7 @@ provider "aws" {
 
 provider "snowflake" {
   account  = var.SNOWFLAKE_ACCOUNT
-  user = var.SNOWFLAKE_USERNAME
+  username = var.SNOWFLAKE_USERNAME
   password = var.SNOWFLAKE_PASSWORD
   role = var.SNOWFLAKE_ROLE
 }

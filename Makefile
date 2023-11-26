@@ -4,6 +4,8 @@ export
 export TF_BACKEND_DIR="infrastructure/aws/modules/backend"
 export DEV_ENV_DIR="infrastructure/aws/environments/dev"
 
+init-snowflake-infra:
+	cd snowflake && terraform init
 
 plan-snowflake-infra:
 	cd snowflake && terraform plan

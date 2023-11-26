@@ -1,35 +1,50 @@
 
 // reference: https://docs.snowflake.com/en/user-guide/security-access-control-privileges.html#virtual-warehouse-privileges
 
-resource "snowflake_warehouse_grant" "modify" {
-  provider = snowflake.SECURITYADMIN
+resource "snowflake_grant_privileges_to_role" "modify" {
+  for_each = { for role in var.warehouse_roles : role => ["MODIFY"] }
 
-  warehouse_name = snowflake_warehouse.warehouse.name
-  privilege      = "MODIFY"
-  roles          = var.warehouse_roles
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "WAREHOUSE"
+    object_name = snowflake_warehouse.warehouse.name
+  }
 }
 
-resource "snowflake_warehouse_grant" "monitor" {
-  provider = snowflake.SECURITYADMIN
+resource "snowflake_grant_privileges_to_role" "monitor" {
+  for_each = { for role in var.warehouse_roles : role => ["MONITOR"] }
 
-  warehouse_name = snowflake_warehouse.warehouse.name
-  privilege      = "MONITOR"
-  roles          = var.warehouse_roles
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "WAREHOUSE"
+    object_name = snowflake_warehouse.warehouse.name
+  }
 }
 
-resource "snowflake_warehouse_grant" "operate" {
-  provider = snowflake.SECURITYADMIN
+resource "snowflake_grant_privileges_to_role" "operate" {
+  for_each = { for role in var.warehouse_roles : role => ["OPERATE"] }
 
-  warehouse_name = snowflake_warehouse.warehouse.name
-  privilege      = "OPERATE"
-  roles          = var.warehouse_roles
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "WAREHOUSE"
+    object_name = snowflake_warehouse.warehouse.name
+  }
 }
 
-resource "snowflake_warehouse_grant" "usage" {
-  provider = snowflake.SECURITYADMIN
+resource "snowflake_grant_privileges_to_role" "usage" {
+  for_each = { for role in var.warehouse_roles : role => ["USAGE"] }
 
-  warehouse_name = snowflake_warehouse.warehouse.name
-  privilege      = "USAGE"
-  roles          = var.warehouse_roles
+  role_name  = each.key
+  privileges = each.value
+
+  on_account_object {
+    object_type = "WAREHOUSE"
+    object_name = snowflake_warehouse.warehouse.name
+  }
 }
-

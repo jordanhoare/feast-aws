@@ -1,47 +1,52 @@
 import traceback
 from datetime import datetime
 from json import loads
-from pathlib import Path
-from typing import Any, Dict, List
 
 import pandas as pd
-from fastapi import APIRouter, HTTPException
-from feast import FeatureStore
-from feast.protos.feast.types.Value_pb2 import Value
+from fastapi import APIRouter, HTTPException, Request
 from google.protobuf.json_format import MessageToDict
-from pydantic import BaseModel
 
 from server.logger import logger
+from server.models import GetOnlineFeaturesRequest
+from server.utils import to_proto_value
 
 router = APIRouter()
 
-current_file_path = Path(__file__).resolve()
-repository_path = current_file_path.parents[3] / "repository"
 
-store = FeatureStore(repo_path=repository_path)
+@router.post("/get-online-features")
+def get_online_features(request: Request, body: GetOnlineFeaturesRequest):
+    feature_store = request.app.state.feature_store
 
+    try:
+        # Convert entity values to Protobuf Value objects
+        entity_proto_values = {
+            key: [to_proto_value(val) for val in values]
+            for key, values in body.entity_values.items()
+        }
 
-# Hacking this together at the moment.
-def to_proto_value(value: Any) -> Value:
-    if isinstance(value, int):
-        return Value(int64_val=value)
-    elif isinstance(value, float):
-        return Value(double_val=value)
-    elif isinstance(value, str):
-        return Value(string_val=value)
-    else:
-        raise TypeError(f"Unsupported data type: {type(value)}")
+        response_proto = feature_store._get_online_features(
+            features=body.features,
+            entity_values=entity_proto_values,
+            full_feature_names=body.full_feature_names,
+            native_entity_values=False,  # Set as required
+        ).proto
 
+        # Convert the Protobuf object to JSON and return it
+        return MessageToDict(  # type: ignore
+            response_proto, preserving_proto_field_name=True, float_precision=18
+        )
 
-class GetOnlineFeaturesRequest(BaseModel):
-    features: List[str]  # Assuming features are provided as a list of strings
-    entity_values: Dict[str, List[Any]]  # Mapping of entity names to their values
-    full_feature_names: bool = False
+    except Exception as e:
+        logger.exception(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/")
-def get_features():
+def get_features(request: Request):
     """Testing fetch"""
+
+    feature_store = request.app.state.feature_store
+
     logger.info("Fetching features for entity")
 
     entity_df = pd.DataFrame.from_dict(
@@ -56,7 +61,7 @@ def get_features():
             ],
         }
     )
-    feature_data = store.get_historical_features(
+    feature_data = feature_store.get_historical_features(
         entity_df=entity_df,
         features=[
             "driver_hourly_stats:conv_rate",
@@ -68,29 +73,3 @@ def get_features():
     parsed = loads(result)
 
     return parsed
-
-
-@router.post("/get-online-features")
-def get_online_features(request: GetOnlineFeaturesRequest):
-    try:
-        # Convert entity values to Protobuf Value objects
-        entity_proto_values = {
-            key: [to_proto_value(val) for val in values]
-            for key, values in request.entity_values.items()
-        }
-
-        response_proto = store._get_online_features(
-            features=request.features,
-            entity_values=entity_proto_values,
-            full_feature_names=request.full_feature_names,
-            native_entity_values=False,  # Set as required
-        ).proto
-
-        # Convert the Protobuf object to JSON and return it
-        return MessageToDict(  # type: ignore
-            response_proto, preserving_proto_field_name=True, float_precision=18
-        )
-
-    except Exception as e:
-        logger.exception(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=str(e))

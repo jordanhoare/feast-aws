@@ -11,7 +11,7 @@ from feast.protos.feast.types.Value_pb2 import Value
 from google.protobuf.json_format import MessageToDict
 from pydantic import BaseModel
 
-from server.core.logger import logger
+from server.logger import logger
 
 router = APIRouter()
 

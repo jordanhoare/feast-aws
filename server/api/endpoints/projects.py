@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from server.core.logger import logger
+from server.logger import logger
 
 
 class Project(BaseModel):

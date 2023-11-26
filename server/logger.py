@@ -1,8 +1,6 @@
 import logging
 
-from server.core.config import get_settings
-
-settings = get_settings()
+from server.config import settings
 
 gunicorn_logger = logging.getLogger("gunicorn.error")
 logger = logging.getLogger(settings.SERVICE_NAME)

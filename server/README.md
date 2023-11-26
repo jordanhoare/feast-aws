@@ -160,7 +160,7 @@ After the server starts, custom requests can be executed to retrieve features. T
 
 ```bash
 $  curl -X POST \
-  "http://localhost:6566/get-online-features" \
+  'http://0.0.0.0:8000/materialize' \
   -d '{
     "features": [
       "driver_hourly_stats:conv_rate",
@@ -180,7 +180,7 @@ The server also exposes endpoints for pushing data to the online and offline sto
 
 ```bash
 curl -X POST \
-    "http://localhost:6566/push" 
+    'http://0.0.0.0:8000/materialize' 
     -d '{
     "push_source_name": "driver_stats_push_source",
     "df": {

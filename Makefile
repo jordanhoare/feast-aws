@@ -47,7 +47,7 @@ build-run-server:
 	docker run -d -p 8000:8080 --env-file .env server
 
 compose:
-	docker-compose --env-file .env up -d
+	docker-compose --env-file .env up -d --build
 
 clean-up:
 	docker volume prune

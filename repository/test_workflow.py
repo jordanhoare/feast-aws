@@ -1,3 +1,7 @@
+"""
+This is a demo script that shows how to use Feast to retrieve historical and online features from Snowflake.
+"""
+
 import random
 import subprocess
 from datetime import datetime, timedelta

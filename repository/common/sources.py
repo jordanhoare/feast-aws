@@ -5,15 +5,21 @@ Feast supports pulling data from data warehouses like BigQuery, Snowflake,
 Redshift and data lakes (e.g. via Redshift Spectrum, Trino, Spark)
 """
 
-from feast import FileSource
+from feast import SnowflakeSource
+import yaml
 
-driver_stats = FileSource(
-    name="driver_stats_source",
-    path="s3://feast-workshop-sandbox/driver_stats.parquet",
-    s3_endpoint_override="http://s3.ap-southeast-2.amazonaws.com",
+# Defines a data source from which feature values can be retrieved. Sources are queried when building training
+# datasets or materializing features into an online store.
+project_name = yaml.safe_load(open("feature_store.yaml"))["project"]
+
+driver_stats_source = SnowflakeSource(
+    # The Snowflake table where features can be found
+    database=yaml.safe_load(open("feature_store.yaml"))["offline_store"]["database"],
+    table=f"{project_name}_feast_driver_hourly_stats",
+    # The event timestamp is used for point-in-time joins and for ensuring only
+    # features within the TTL are returned
     timestamp_field="event_timestamp",
+    # The (optional) created timestamp is used to ensure there are no duplicate
+    # feature rows in the offline store or when building training datasets
     created_timestamp_column="created",
-    description="\
-        A table describing the stats of a driver based on hourly logs",
-    owner="jordan.hoare@outlook.com",
 )

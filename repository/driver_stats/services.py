@@ -8,8 +8,8 @@ per model, allowing for tracking of the features used by models.
 
 from feast import FeatureService
 
-from driver_stats.views import driver_stats_fv
 from driver_stats.transformations import transformed_conv_rate
+from driver_stats.views import driver_stats_fv
 
 # This groups features into a model version
 driver_activity_v1 = FeatureService(

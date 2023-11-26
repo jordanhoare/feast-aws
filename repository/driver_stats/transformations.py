@@ -1,7 +1,6 @@
 # repository/driver_stats/transformations.py
 
 import pandas as pd
-
 from feast import Field, RequestSource
 from feast.on_demand_feature_view import on_demand_feature_view
 from feast.types import Float64, Int64

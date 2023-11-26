@@ -8,10 +8,9 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 import yaml
-from pytz import utc
-
 from feast import FeatureStore
 from feast.data_source import PushMode
+from pytz import utc
 
 
 def run_demo():

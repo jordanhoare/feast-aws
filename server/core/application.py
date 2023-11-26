@@ -6,7 +6,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from server.api.endpoints import features, projects, registry
+from server.api.endpoints import features, materialize, projects, registry
 from server.core.config import get_settings
 
 
@@ -17,6 +17,7 @@ def create_api():
     api.include_router(features.router, prefix="/features", tags=["features"])
     api.include_router(projects.router, prefix="/projects", tags=["projects"])
     api.include_router(registry.router, prefix="/registry", tags=["registry"])
+    api.include_router(materialize.router, prefix="/materialize", tags=["materialize"])
 
     api.add_middleware(
         CORSMiddleware,

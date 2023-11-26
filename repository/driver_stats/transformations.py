@@ -6,7 +6,7 @@ from feast import Field, RequestSource
 from feast.on_demand_feature_view import on_demand_feature_view
 from feast.types import Float64, Int64
 
-from repository.driver_stats.views import driver_stats_fv
+from driver_stats.views import driver_stats_fv
 
 # Define a request data source which encodes features / information only
 # available at request time (e.g. part of the user initiated HTTP request)

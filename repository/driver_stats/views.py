@@ -10,7 +10,7 @@ from common.sources import driver_stats_source
 
 conv_rate = Field(name="conv_rate", dtype=Float32)
 acc_rate = Field(name="acc_rate", dtype=Float32)
-avg_daily_trips = Field(name="avg_daily_trips", dtype=Int64),
+avg_daily_trips = Field(name="avg_daily_trips", dtype=Int64)
 
 # Feature views are a grouping based on how features are stored in either the
 # online or offline store.

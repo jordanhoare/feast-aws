@@ -8,23 +8,23 @@ offline_store:
     account: ${SNOWFLAKE_ACCOUNT}
     user: ${SNOWFLAKE_USERNAME}
     password: ${SNOWFLAKE_PASSWORD}
-    role: ${SNOWFLAKE_ROLE:"ACCOUNTADMIN"}
-    warehouse: ${SNOWFLAKE_WAREHOUSE:"COMPUTE_WH"}
-    database: ${SNOWFLAKE_DATABASE:"FEAST"}
+    role: ACCOUNTADMIN
+    warehouse: COMPUTE_WH
+    database: FEAST
 batch_engine:
     type: snowflake.engine
     account: ${SNOWFLAKE_ACCOUNT}
     user: ${SNOWFLAKE_USERNAME}
     password: ${SNOWFLAKE_PASSWORD}
-    role: ${SNOWFLAKE_ROLE:"ACCOUNTADMIN"}
-    warehouse: ${SNOWFLAKE_WAREHOUSE:"COMPUTE_WH"}
-    database: ${SNOWFLAKE_DATABASE:"FEAST"}
+    role: ACCOUNTADMIN
+    warehouse: COMPUTE_WH
+    database: FEAST
 online_store:
     type: snowflake.online
     account: ${SNOWFLAKE_ACCOUNT}
     user: ${SNOWFLAKE_USERNAME}
     password: ${SNOWFLAKE_PASSWORD}
-    role: ${SNOWFLAKE_ROLE:"ACCOUNTADMIN"}
-    warehouse: ${SNOWFLAKE_WAREHOUSE:"COMPUTE_WH"}
-    database: ${SNOWFLAKE_DATABASE:"FEAST"}
+    role: ACCOUNTADMIN
+    warehouse: COMPUTE_WH
+    database: FEAST
 entity_key_serialization_version: 2

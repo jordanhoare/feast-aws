@@ -14,6 +14,7 @@ class Project(BaseModel):
 router = APIRouter()
 
 
+# TODO: Look to infer the project list from the registry
 @router.get("")
 def get_projects():
     logger.info("Fetching list of projects.")

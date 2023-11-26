@@ -106,6 +106,7 @@ Before starting, ensure you have the following installed:
 - [Poetry](https://python-poetry.org/) for Python dependency and package management
 - [Node.js v16.0+](https://nodejs.org/en/download) for JavaScript runtime environment
 - [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) for JavaScript dependency and package management
+- [Snowflake Trial Account](https://signup.snowflake.com/) to act as an offline store and engine
 
 #### Caveats
 - **Windows**: You'll likely need a [WSL 2 backend on Windows](https://docs.docker.com/desktop/wsl/) to develop with.
@@ -281,6 +282,19 @@ Outline the structure of the project and describe the purpose of each top-level 
 
 <br>
 
+## Recommended Customisations
+
+- For production environments, it's recommended to follow the principle of least privilege, granting only the necessary permissions to minimize potential security risks. You might want to tailor the permissions of specific services (particularly **Snowflake**) later based on the needs and operations of Feast in your setup.
+
+<br>
+
+## Resources
+- Official Feast Docs: [Feast Docs](https://docs.feast.dev/)
+- Official Feast API Reference: [API Reference](https://rtd.feast.dev/en/master/)
+- [Snowflake Trial Account](https://signup.snowflake.com/)
+
+<br>
+
 ## Development Plan
 
 This section outlines the planned development features for the Feast-based machine learning workflow implementation on AWS, along with specific tasks under each feature.
@@ -386,12 +400,6 @@ This section outlines the planned development features for the Feast-based machi
   - [ ] Set up CI/CD for Airflow DAGs to ensure they are tested before deployment.
   - [ ] Automate the deployment of DAGs to the Airflow environment.
   - [ ] Implement version control and rollback capabilities for DAGs.
-
-<br>
-
-## Resources
-- Official Feast Docs: [Feast Docs](https://docs.feast.dev/)
-- Official Feast API Reference: [API Reference](https://rtd.feast.dev/en/master/)
 
 <br>
 

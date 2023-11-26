@@ -8,7 +8,7 @@ packages = [{include = "feast_aws"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-feast = {extras = ["aws"], version = "^0.34.1"}
+feast = {extras = ["aws", "postgres", "redis", "snowflake"], version = "^0.34.1"}
 fastapi = "0.99.1"
 uvicorn = "^0.24.0.post1"
 requests = "^2.31.0"

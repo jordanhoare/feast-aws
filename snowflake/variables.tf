@@ -23,4 +23,11 @@ variable "SNOWFLAKE_ROLE" {
   description = "Snowflake Provider Role"
 }
 
+# variable "SNOWFLAKE_HOST" {
+#   type        = string
+#   description = "Snowflake Provider Host URL"
+# }
+
+
+
 

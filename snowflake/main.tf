@@ -13,9 +13,13 @@ provider "aws" {
 
 provider "snowflake" {
   account  = var.SNOWFLAKE_ACCOUNT
-  username = var.SNOWFLAKE_USERNAME
+  username = var.SNOWFLAKE_USERNAME # v0.73.0 do not know yet `user`
   password = var.SNOWFLAKE_PASSWORD
-  role = var.SNOWFLAKE_ROLE
+}
+
+provider "snowflake" {
+  alias = "ACCOUNTADMIN"
+  role  = "ACCOUNTADMIN"
 }
 
 provider "snowflake" {
@@ -26,10 +30,5 @@ provider "snowflake" {
 provider "snowflake" {
   alias = "SECURITYADMIN"
   role  = "SECURITYADMIN"
-}
-
-provider "snowflake" {
-  alias = "ACCOUNTADMIN"
-  role  = "ACCOUNTADMIN"
 }
 

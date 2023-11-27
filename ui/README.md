@@ -187,9 +187,15 @@ The extent of what can be customized and how easy it is to implement these custo
 
 ## Solutions
 
+By directing our UI application to the FastAPI server running Feast's FeatureStore, we create a clear separation between the frontend and backend - leading to a more modular and manageable architecture. We can do so by containerising our React application for deployment. Then we can consider our implement requirements:
+
 **Option 1: Modify Source Code Directly**
 
 To modify specific texts or elements on a specific page, you would likely need to modify the source code of those pages directly. This could involve forking the repository and making changes to the React components as needed. Now this new React app can be re-built (and deployed).
 
 By directing our UI application to the FastAPI server running Feast's FeatureStore, we create a clear separation between the frontend and backend - leading to a more modular and manageable architecture. 
 
+<br>
+
+**Option 2: Build with out-the-box Feast UI from NPM**
+...

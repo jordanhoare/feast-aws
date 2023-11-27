@@ -1,70 +1,195 @@
-# Getting Started with Create React App
+# UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Feast CLI: `ui`
 
-## Available Scripts
+The Feast CLI's `ui` command initializes and serves the Feast UI locally.
 
-In the project directory, you can run:
+When the `ui` command is executed, it triggers a series of operations:
 
-### `npm start`
+1. **Feature Store Initialization**: Initializes the Feast Feature Store.
+2. **UI Server Setup**: Sets up and starts a local UI server using FastAPI.
+3. **Static File Serving**: Serves the pre-built React application.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<br>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+### Detailed Workflow
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**CLI Handler**
+The `ui` command in the CLI handler initializes the Feast Feature Store and starts the UI server.
 
-### `npm run build`
+Source: [cli.ui()](https://github.com/feast-dev/feast/blob/e06588314be6bde35e07681a53c41730e21b884f/sdk/python/feast/cli.py#L158)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```py
+@click.pass_context
+def ui(
+    ctx: click.Context,
+    host: str,
+    port: int,
+    registry_ttl_sec: int,
+    root_path: Optional[str] = "",
+):
+    """
+    Shows the Feast UI over the current directory
+    """
+    # Pass in the registry_dump from: https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/repo_operations.py#L371
+    store = create_feature_store(ctx)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    store.serve_ui(
+        host=host,
+        port=port,
+        get_registry_dump=registry_dump,
+        registry_ttl_sec=registry_ttl_sec,
+        root_path=root_path,
+    )
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<br>
 
-### `npm run eject`
+**Feature Store Creation**
+The `create_feature_store` function is responsible for setting up the FeatureStore instance. It prepares the environment and configuration necessary for the feature store to operate.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Source: [repo_operations.create_feature_store()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/repo_operations.py#L334)
+```py
+def create_feature_store(
+    ctx: click.Context,
+) -> FeatureStore:
+    ... # Omitted for brevity
+    repo_path = Path(tempfile.mkdtemp())
+    with open(repo_path / "feature_store.yaml", "wb") as f:
+        f.write(config_bytes)
+    return FeatureStore(repo_path=ctx.obj["CHDIR"], fs_yaml_file=fs_yaml_file)
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<br>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**UI Server Initialization**
+The `serve_ui` method in the FeatureStore class is responsible for starting the UI server locally.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Source: [FeatureStore.serve_ui()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/feature_store.py#L2256)
+```py
+    def serve_ui(
+        self,
+        host: str,
+        port: int,
+        get_registry_dump: Callable,
+        registry_ttl_sec: int,
+        root_path: str = "",
+    ) -> None:
+        ... # Omitted for brevity
+        ui_server.start_server(
+            self,
+            host=host,
+            port=port,
+            get_registry_dump=get_registry_dump,
+            project_id=self.config.project,
+            registry_ttl_sec=registry_ttl_sec,
+            root_path=root_path,
+        )
+```
 
-## Learn More
+<br>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Static File Serving**
+The `start_server` function in `ui_server` sets up the FastAPI application to serve the built React UI.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Source: [ui_server.start_server()](https://github.com/feast-dev/feast/blob/052182bcca046e35456674fc7d524825882f4b35/sdk/python/feast/feature_store.py#L2256)
+```py
 
-### Code Splitting
+def get_app(
+    store: "feast.FeatureStore",
+    project_id: str,
+    registry_ttl_secs: int,
+    root_path: str = "",
+):
+    app = FastAPI()
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    ... # Omitted for brevity
 
-### Analyzing the Bundle Size
+    # Initialize with the projects-list.json file
+    ui_dir_ref = importlib_resources.files(__name__) / "ui/build/"
+    with importlib_resources.as_file(ui_dir_ref) as ui_dir:
+        with ui_dir.joinpath("projects-list.json").open(mode="w") as f:
+            projects_dict = {
+                "projects": [
+                    {
+                        "name": "Project",
+                        "description": "Test project",
+                        "id": project_id,
+                        "registryPath": f"{root_path}/registry",
+                    }
+                ]
+            }
+            f.write(json.dumps(projects_dict))
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    ... # Omitted for brevity
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    @app.api_route("/p/{path_name:path}", methods=["GET"])
+    def catch_all():
+        filename = ui_dir.joinpath("index.html")
 
-### Advanced Configuration
+        with open(filename) as f:
+            content = f.read()
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+        return Response(content, media_type="text/html")
 
-### Deployment
+    app.mount(
+        "/",
+        StaticFiles(directory=ui_dir, html=True),
+        name="site",
+    )
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+    return app
 
-### `npm run build` fails to minify
+def start_server(
+    store: "feast.FeatureStore",
+    host: str,
+    port: int,
+    get_registry_dump: Callable,
+    project_id: str,
+    registry_ttl_sec: int,
+    root_path: str = "",
+):
+    app = get_app(
+        store,
+        project_id,
+        registry_ttl_sec,
+        root_path,
+    )
+    uvicorn.run(app, host=host, port=port)
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<br>
+
+## Feast UI Build
+
+When you install the Feast Python package (via `pip install feast`), it includes the built React application within its package structure. When ui_server.start_server(), starts a FastAPI server that serves this pre-built React application. This setup allows you to quickly start a local instance of the Feast UI without needing to manually build the React application yourself.
+
+![Feast UI Build](../docs/feast-ui-build.png)
+
+
+<br>
+
+## Feast NPM Package & Caveats
+
+The [FeastUI.tsx](https://github.com/feast-dev/feast/blob/v0.34-branch/ui/src/FeastUI.tsx) sets up the main React components and routing for the application. It uses [FeastUISansProviders.tsx](https://github.com/feast-dev/feast/blob/v0.34-branch/ui/src/FeastUISansProviders.tsx) and passes `FeastUIConfigs` as a prop. This suggests some level of configurability, as `FeastUIConfigs` could be used to customize certain aspects of the UI.
+
+This file appears to be the core of the UI, where the main components and routes are defined. It accepts `FeastUIConfigs` as a prop, which indicates that some level of customization is possible, as referenced in their [official start up guide](https://docs.feast.dev/reference/alpha-web-ui#importing-as-a-module-to-integrate-with-an-existing-react-app). 
+
+The extent of what can be customized and how easy it is to implement these customizations would depend on the specific implementation details within these components and the designed limitations of the FeastUIConfigs prop. The `FeastUIConfigs interface` includes the following properties:
+
+- tabsRegistry: This allows for the customization of tabs within the UI.
+- featureFlags: This is used for enabling or disabling certain features within the UI.
+- projectListPromise: This is a promise that resolves to a list of projects. It seems to be used for customizing how the list of projects is fetched and displayed.
+
+<br>
+
+## Solutions
+
+**Option 1: Modify Source Code Directly**
+
+To modify specific texts or elements on a specific page, you would likely need to modify the source code of those pages directly. This could involve forking the repository and making changes to the React components as needed. Now this new React app can be re-built (and deployed).
+
+By directing our UI application to the FastAPI server running Feast's FeatureStore, we create a clear separation between the frontend and backend - leading to a more modular and manageable architecture. 
+

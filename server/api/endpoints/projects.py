@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from server.core.logger import logger
+from server.logger import logger
 
 
 class Project(BaseModel):
@@ -14,6 +14,7 @@ class Project(BaseModel):
 router = APIRouter()
 
 
+# TODO: Look to infer the project list from the registry
 @router.get("")
 def get_projects():
     logger.info("Fetching list of projects.")

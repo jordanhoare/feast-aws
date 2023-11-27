@@ -10,7 +10,8 @@ from common.sources import driver_stats_source
 
 conv_rate = Field(name="conv_rate", dtype=Float32)
 acc_rate = Field(name="acc_rate", dtype=Float32)
-avg_daily_trips = Field(name="avg_daily_trips", dtype=Int64),
+avg_daily_trips = Field(name="avg_daily_trips", dtype=Int64)
+driver_id = Field(name="driver_id", dtype=Int64)
 
 # Feature views are a grouping based on how features are stored in either the
 # online or offline store.
@@ -33,6 +34,6 @@ driver_stats_fv = FeatureView(
     # The list of features defined below act as a schema to both define features
     # for both materialization of features into a store, and are used as references
     # during retrieval for building a training dataset or serving features
-    schema=[conv_rate, acc_rate, avg_daily_trips],
+    schema=[driver_id, conv_rate, acc_rate, avg_daily_trips],
     source=driver_stats_source,
 )

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import boto3
 from botocore.exceptions import ClientError, NoCredentialsError
 from fastapi import FastAPI, Request
@@ -5,18 +7,28 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from feast import FeatureStore
 
-from server.api.endpoints import features, projects, registry
-from server.core.config import get_settings
+from server.api.router import router
+from server.config import settings
+
+
+def fetch_registry_from_s3(bucket_name, object_name, local_file_path):
+    """Download a file from S3 and save it locally."""
+    s3_client = boto3.client("s3")
+    try:
+        s3_client.download_file(bucket_name, object_name, local_file_path)
+    except NoCredentialsError:
+        print("Credentials not available")
+        raise
+    except ClientError as e:
+        print(f"An error occurred: {e}")
+        raise
 
 
 def create_api():
     api = FastAPI()
-    settings = get_settings()
-
-    api.include_router(features.router, prefix="/features", tags=["features"])
-    api.include_router(projects.router, prefix="/projects", tags=["projects"])
-    api.include_router(registry.router, prefix="/registry", tags=["registry"])
+    api.include_router(router)
 
     api.add_middleware(
         CORSMiddleware,
@@ -28,23 +40,16 @@ def create_api():
 
     @api.on_event("startup")
     async def startup_event() -> None:
-        def fetch_registry_from_s3(bucket_name, object_name, local_file_path):
-            """Download a file from S3 and save it locally."""
-            s3_client = boto3.client("s3")
-            try:
-                s3_client.download_file(bucket_name, object_name, local_file_path)
-            except NoCredentialsError:
-                print("Credentials not available")
-                raise
-            except ClientError as e:
-                print(f"An error occurred: {e}")
-                raise
-
         fetch_registry_from_s3(
             bucket_name="feast-workshop-sandbox",
-            object_name="registry.pb",
+            object_name=settings.REGISTRY_FILE,
             local_file_path=settings.LOCAL_REGISTRY_PATH,
         )
+
+        # Initialise the FeatureStore instance from the `feature_store.yml`
+        current_file_path = Path(__file__).resolve()
+        repository_path = current_file_path.parents[1] / "repository"
+        api.state.feature_store = FeatureStore(repository_path)
 
     @api.exception_handler(RequestValidationError)
     async def value_exception_handler(request: Request, exc: RequestValidationError):

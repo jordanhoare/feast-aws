@@ -1,11 +1,10 @@
 from fastapi import APIRouter
 from fastapi.responses import FileResponse
 
-from server.core.config import get_settings
-from server.core.logger import logger
+from server.config import settings
+from server.logger import logger
 
 router = APIRouter()
-settings = get_settings()
 
 
 @router.get("")

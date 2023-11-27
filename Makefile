@@ -4,11 +4,6 @@ export
 export TF_BACKEND_DIR="infrastructure/aws/modules/backend"
 export DEV_ENV_DIR="infrastructure/aws/environments/dev"
 
-init-snowflake-infra:
-	cd snowflake && terraform init
-
-plan-snowflake-infra:
-	cd snowflake && terraform plan
 
 init-remote-infra:
 	cd $(TF_BACKEND_DIR) && terraform init
@@ -52,7 +47,7 @@ build-run-server:
 	docker run -d -p 8000:8080 --env-file .env server
 
 compose:
-	docker-compose --env-file .env up -d
+	docker-compose --env-file .env up -d --build
 
 clean-up:
 	docker volume prune

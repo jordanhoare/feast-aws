@@ -403,30 +403,5 @@ This section outlines the planned development features for the Feast-based machi
 
 <br>
 
-## Repository Structure
-
-```
-feast-aws
-├─ .github # All of the project's CI/CD
-│  └─ workflows
-│     └─ ...
-├─ infrastructure # Terraform modules for infastructure management
-│  └─ aws
-│     ├─ environments
-│     │  └─ dev
-│     │     ├─ main.tf
-│     │     ├─ outputs.tf
-│     │     └─ variables.tf
-│     │  └─ prod
-│     │     ├─ main.tf
-│     │     ├─ outputs.tf
-│     │     └─ variables.tf
-│     └─ modules
-│        └─ ...
-├─ repository
-│  └─ feature_store.yaml
-├─ server # The FastAPI service which is an instance of 'Feast.FeatureStore()'
-│  └─ ...
-└─ ui # A React App that uses Feast's NPM library and communicates with the FastAPI server
-   └─ ...
-```
+### TO-DO
+- automate task-definition in pipeline to remove static def in repo (or auto build it)

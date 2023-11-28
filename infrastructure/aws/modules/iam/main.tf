@@ -12,27 +12,7 @@ resource "aws_iam_openid_connect_provider" "github_oidc" {
   thumbprint_list = var.thumbprint_list
 }
 
-resource "aws_iam_policy" "pass_role_policy" {
-  name        = "PassRolePolicy"
-  description = "Allows passing of ECS task role"
 
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "iam:PassRole",
-        Effect = "Allow",
-        Resource = "arn:aws:iam::432702836969:role/ecs_task_role"
-      }
-    ]
-  })
-}
-
-
-resource "aws_iam_role_policy_attachment" "pass_role_policy_attachment" {
-  role       = aws_iam_role.ecs_task_role.name
-  policy_arn = aws_iam_policy.pass_role_policy.arn
-}
 
 resource "aws_iam_role" "github_actions_role" {
   name = "github_actions_role"
@@ -68,8 +48,24 @@ data "aws_iam_policy_document" "github_actions_role" {
       "ecr:InitiateLayerUpload",
       "ecr:UploadLayerPart",
       "ecr:CompleteLayerUpload",
+      "ecs:CreateService",
+      "ecs:UpdateService",
+      "ecs:DeleteService",
+      "ecs:DescribeServices",
+      "ecs:ListServices",
       "ecs:RegisterTaskDefinition",
       "ecs:DeregisterTaskDefinition",
+      "ecs:DescribeTaskDefinition",
+      "ecs:ListTaskDefinitions",
+      "ecs:CreateCluster",
+      "ecs:DeleteCluster",
+      "ecs:DescribeClusters",
+      "ecs:ListClusters",
+      "ecs:RunTask",
+      "ecs:StartTask",
+      "ecs:StopTask",
+      "ecs:DescribeTasks",
+      "ecs:ListTasks",
     ]
     resources = ["*"] # This gives permissions on all ECR resources; consider scoping to specific resources.
   }
@@ -136,4 +132,25 @@ data "aws_iam_policy_document" "ecs_task_policy" {
     ]
     resources = ["*"] # You might want to restrict this to specific resources.
   }
+}
+
+resource "aws_iam_policy" "pass_role_policy" {
+  name        = "PassRolePolicy"
+  description = "Allows passing of ECS task role"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "iam:PassRole",
+        Effect = "Allow",
+        Resource = "arn:aws:iam::${var.aws_account_id}:role/ecs_task_role"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "pass_role_policy_attachment" {
+  role       = aws_iam_role.github_actions_role.name
+  policy_arn = aws_iam_policy.pass_role_policy.arn
 }

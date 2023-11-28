@@ -17,6 +17,9 @@ apply-remote-infra:
 init-feast-infra:
 	cd $(DEV_ENV_DIR) &&  terraform init
 
+plan-feast-infra:
+	cd $(DEV_ENV_DIR) &&  terraform plan
+
 apply-feast-infra:
 	cd $(DEV_ENV_DIR) &&  terraform apply -auto-approve
 

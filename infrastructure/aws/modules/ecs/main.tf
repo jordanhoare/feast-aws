@@ -17,7 +17,7 @@ resource "aws_ecs_service" "service" {
   load_balancer {
     target_group_arn = var.lb_tg_arn
     container_name   = "app"
-    container_port   = 80
+    container_port   = 8000
   }
   
   network_configuration {

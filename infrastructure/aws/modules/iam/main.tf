@@ -1,12 +1,20 @@
+resource "aws_iam_role_policy" "github_actions_role" {
+  name   = "github_actions_role"
+  role   = aws_iam_role.github_actions_role.id
+  policy = data.aws_iam_policy_document.github_actions_role.json
+}
+
+resource "aws_iam_role_policy" "ecs_task_policy" {
+  name   = "ecs_task_policy"
+  role   = aws_iam_role.ecs_task_role.id
+  policy = data.aws_iam_policy_document.ecs_task_policy.json
+}
+
 resource "aws_iam_openid_connect_provider" "github_oidc" {
   url             = "https://token.actions.githubusercontent.com"
   client_id_list  = ["sts.amazonaws.com"]
-
-  thumbprint_list = [
-    "a031c46782e6e6c662c2c87c76da9aa62ccabd8e" 
-  ]
+  thumbprint_list = var.thumbprint_list
 }
-
 
 resource "aws_iam_role" "github_actions_role" {
   name = "github_actions_role"
@@ -21,20 +29,14 @@ resource "aws_iam_role" "github_actions_role" {
           Federated = aws_iam_openid_connect_provider.github_oidc.arn
         },
         Condition = {
-          "StringEquals": {
-            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-            "token.actions.githubusercontent.com:sub": "repo:${var.repository_name}:*"
+          StringLike = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub": "repo:jordanhoare/feast-aws:*",
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud": "sts.amazonaws.com"
           }
         }
       }
     ]
   })
-}
-
-resource "aws_iam_role_policy" "github_actions_role" {
-  name   = "github_actions_role"
-  role   = aws_iam_role.github_actions_role.id
-  policy = data.aws_iam_policy_document.github_actions_role.json
 }
 
 data "aws_iam_policy_document" "github_actions_role" {
@@ -52,8 +54,6 @@ data "aws_iam_policy_document" "github_actions_role" {
   }
 }
 
-
-
 resource "aws_iam_role" "ecs_task_role" {
   name = "ecs_task_role"
 
@@ -69,12 +69,6 @@ resource "aws_iam_role" "ecs_task_role" {
       },
     ]
   })
-}
-
-resource "aws_iam_role_policy" "ecs_task_policy" {
-  name   = "ecs_task_policy"
-  role   = aws_iam_role.ecs_task_role.id
-  policy = data.aws_iam_policy_document.ecs_task_policy.json
 }
 
 data "aws_iam_policy_document" "ecs_task_policy" {

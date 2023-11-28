@@ -17,6 +17,9 @@ apply-remote-infra:
 init-feast-infra:
 	cd $(DEV_ENV_DIR) &&  terraform init
 
+fmt-feast-infra:
+	cd $(DEV_ENV_DIR) &&  terraform fmt
+
 plan-feast-infra:
 	cd $(DEV_ENV_DIR) &&  terraform plan
 

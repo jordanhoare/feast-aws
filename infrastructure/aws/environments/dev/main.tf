@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    region         = "ap-southeast-2"
-    key            = "terraform.tfstate"
-    encrypt        = true
+    region  = "ap-southeast-2"
+    key     = "terraform.tfstate"
+    encrypt = true
   }
 }
 
@@ -11,7 +11,7 @@ provider "aws" {
 }
 
 module "feast_s3_bucket" {
-  source      = "./../../modules/s3"
+  source       = "./../../modules/s3"
   project_name = var.project_name
 }
 
@@ -22,8 +22,8 @@ resource "aws_s3_object" "driver_stats_upload" {
 }
 
 module "ecr" {
-  source = "./../../modules/ecr"
-  repository_name  = "feast-repo"
+  source          = "./../../modules/ecr"
+  repository_name = "feast-repo"
 }
 
 module "iam" {

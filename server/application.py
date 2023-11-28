@@ -46,7 +46,7 @@ def create_api():
             local_file_path=settings.LOCAL_REGISTRY_PATH,
         )
 
-        # Initialise the FeatureStore instance from the `feature_store.yml`.
+        # Initialise the FeatureStore instance from the `feature_store.yml`
         current_file_path = Path(__file__).resolve()
         repository_path = current_file_path.parents[1] / "repository"
         api.state.feature_store = FeatureStore(repository_path)

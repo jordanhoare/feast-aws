@@ -37,6 +37,7 @@ resource "aws_iam_role" "github_actions_role" {
 data "aws_iam_policy_document" "github_actions_role" {
   statement {
     actions = [
+      "ecr:GetAuthorizationToken",   # Required for ECR login
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
       "ecr:BatchCheckLayerAvailability",
@@ -45,9 +46,10 @@ data "aws_iam_policy_document" "github_actions_role" {
       "ecr:UploadLayerPart",
       "ecr:CompleteLayerUpload",
     ]
-    resources = ["*"] # You might want to restrict this to specific resources.
+    resources = ["*"] # This gives permissions on all ECR resources; consider scoping to specific resources.
   }
 }
+
 
 
 

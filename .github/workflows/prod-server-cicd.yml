@@ -1,0 +1,56 @@
+name: Server CI/CD
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'server/**'
+      - 'repository/**'
+
+
+jobs:
+
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Built for later ECS spec - currently disabling from PROD env till infra is done.
+
+      # - name: Configure AWS Credentials
+      #   id: aws-credentials
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     role-to-assume: arn:aws:iam::432702836969:role/github_actions_role
+      #     aws-region: ap-southeast-2
+      #     audience: sts.amazonaws.com
+
+      # - name: Login to Amazon ECR
+      #   id: login-ecr
+      #   uses: aws-actions/amazon-ecr-login@v1
+
+      # - name: Build, tag & push image to Amazon ECR
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     file: ./server/Dockerfile
+      #     push: true
+      #     tags: ${{ steps.login-ecr.outputs.registry }}/feast-repo:latest
+      #   env:
+      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #     ECR_REPOSITORY: feast-repo
+      #     IMAGE_TAG: latest
+
+      # - name: Deploy to Amazon ECS
+      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      #   with:
+      #     task-definition: task-definition.json
+      #     service: app_service
+      #     cluster: app_cluster
+      #     wait-for-service-stability: true

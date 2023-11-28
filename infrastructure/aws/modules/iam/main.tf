@@ -4,11 +4,6 @@ resource "aws_iam_role_policy" "github_actions_role" {
   policy = data.aws_iam_policy_document.github_actions_role.json
 }
 
-resource "aws_iam_role_policy" "ecs_task_policy" {
-  name   = "ecs_task_policy"
-  role   = aws_iam_role.ecs_task_role.id
-  policy = data.aws_iam_policy_document.ecs_task_policy.json
-}
 
 resource "aws_iam_openid_connect_provider" "github_oidc" {
   url             = "https://token.actions.githubusercontent.com"
@@ -52,6 +47,14 @@ data "aws_iam_policy_document" "github_actions_role" {
     ]
     resources = ["*"] # You might want to restrict this to specific resources.
   }
+}
+
+
+
+resource "aws_iam_role_policy" "ecs_task_policy" {
+  name   = "ecs_task_policy"
+  role   = aws_iam_role.ecs_task_role.id
+  policy = data.aws_iam_policy_document.ecs_task_policy.json
 }
 
 resource "aws_iam_role" "ecs_task_role" {

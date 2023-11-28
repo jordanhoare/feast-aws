@@ -16,8 +16,8 @@ resource "aws_ecs_service" "service" {
 
   network_configuration {
     assign_public_ip = true
-    security_groups  = [aws_security_group.sg.id]
-    subnets          = [aws_subnet.sn1.id, aws_subnet.sn2.id, aws_subnet.sn3.id]
+    security_groups  = var.security_groups
+    subnets          = var.subnets
   }
 }
 
@@ -25,14 +25,14 @@ resource "aws_ecs_task_definition" "td" {
   container_definitions = jsonencode([
     {
       name         = "app"
-      image        = "***.dkr.ecr.ap-southeast-2.amazonaws.com/app_repo"
-      cpu          = 256
-      memory       = 512
+      image        = var.image
+      cpu          = var.cpu
+      memory       = var.memory
       essential    = true
       portMappings = [
         {
-          containerPort = 80
-          hostPort      = 80
+          containerPort = var.container_port
+          hostPort      = var.host_port
         }
       ]
     }
@@ -40,8 +40,8 @@ resource "aws_ecs_task_definition" "td" {
   family                   = "app"
   requires_compatibilities = ["FARGATE"]
 
-  cpu                = "256"
-  memory             = "512"
+  cpu                = var.cpu
+  memory             = var.memory
   network_mode       = "awsvpc"
   task_role_arn      = var.ecs_task_execution_role_arn
   execution_role_arn = var.ecs_task_execution_role_arn

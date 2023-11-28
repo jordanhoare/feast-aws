@@ -38,9 +38,12 @@ module "vpc" {
 
 module "ecs" {
   source                      = "./../../modules/ecs"
-  security_groups             = [module.vpc.security_group_ids]
+  security_groups             = module.vpc.security_group_ids
   subnets                     = module.vpc.subnet_ids
-  ecs_task_execution_role_arn = module.iam.ecs_task_role.arn
+  ecs_task_execution_role_arn = module.iam.ecs_task_role_arn
+  image                       = "${module.ecr.repository_url}/feast-repo"
+  host_port                   = 80
+  container_port              = 80
+  memory                      = 512
+  cpu                         = 256
 }
-
-

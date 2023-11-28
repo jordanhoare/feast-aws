@@ -14,6 +14,12 @@ resource "aws_ecs_service" "service" {
   desired_count                      = 1
   task_definition                    = aws_ecs_task_definition.td.arn
 
+  load_balancer {
+    target_group_arn = var.lb_tg_arn
+    container_name   = "app"
+    container_port   = 80
+  }
+  
   network_configuration {
     assign_public_ip = true
     security_groups  = var.security_groups

@@ -43,3 +43,10 @@ variable "host_port" {
   default     = 8000
 }
 
+variable "lb_tg_arn" {
+  description = "Load balancer ARN"
+  type        = string
+}
+
+
+

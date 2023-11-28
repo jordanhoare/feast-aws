@@ -14,7 +14,7 @@ plan-remote-infra:
 apply-remote-infra:
 	cd $(TF_BACKEND_DIR) && terraform apply -auto-approve
 
-destroy-feast:
+destroy-feast-infra:
 	cd $(DEV_ENV_DIR) &&  terraform destroy
 
 init-feast-infra:

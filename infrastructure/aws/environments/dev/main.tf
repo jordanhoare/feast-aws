@@ -31,32 +31,3 @@ module "ecr" {
   source          = "./../../modules/ecr"
   repository_name = "feast-repo"
 }
-
-module "vpc" {
-  source = "./../../modules/vpc"
-}
-
-
-module "load_balancer" {
-  source = "./../../modules/load_balancer"
-
-  lb_name           = "my-alb"
-  tg_name           = "my-alb-tg"
-  vpc_id            = module.vpc.vpc_id
-  subnet_ids        = module.vpc.subnet_ids
-  security_group_ids = module.vpc.security_group_ids
-}
-
-
-module "ecs" {
-  source                      = "./../../modules/ecs"
-  security_groups             = module.vpc.security_group_ids
-  subnets                     = module.vpc.subnet_ids
-  ecs_task_execution_role_arn = module.iam.ecs_task_role_arn
-  image                       = "${module.ecr.repository_url}/feast-repo"
-  host_port                   = 8000
-  container_port              = 8000
-  memory                      = 512
-  cpu                         = 256
-  lb_tg_arn                   = module.load_balancer.lb_tg_arn
-}

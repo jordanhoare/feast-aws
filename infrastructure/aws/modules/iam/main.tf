@@ -25,7 +25,7 @@ resource "aws_iam_role" "github_actions_role" {
         },
         Condition = {
           StringLike = {
-            "${aws_iam_openid_connect_provider.github_oidc.url}:sub": "repo:jordanhoare/feast-aws:*",
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub": "repo:${var.repository_name}:*",
             "${aws_iam_openid_connect_provider.github_oidc.url}:aud": "sts.amazonaws.com"
           }
         }
@@ -51,8 +51,6 @@ data "aws_iam_policy_document" "github_actions_role" {
 }
 
 
-
-
 resource "aws_iam_role_policy" "ecs_task_policy" {
   name   = "ecs_task_policy"
   role   = aws_iam_role.ecs_task_role.id
@@ -66,12 +64,18 @@ resource "aws_iam_role" "ecs_task_role" {
     Version = "2012-10-17",
     Statement = [
       {
-        Action = "sts:AssumeRole",
         Effect = "Allow",
+        Action = "sts:AssumeRoleWithWebIdentity",
         Principal = {
-          Service = "ecs-tasks.amazonaws.com"
+          Federated = aws_iam_openid_connect_provider.github_oidc.arn
+        },
+        Condition = {
+          StringLike = {
+            "${aws_iam_openid_connect_provider.github_oidc.url}:sub": "repo:${var.repository_name}:*",
+            "${aws_iam_openid_connect_provider.github_oidc.url}:aud": "sts.amazonaws.com"
+          }
         }
-      },
+      }
     ]
   })
 }

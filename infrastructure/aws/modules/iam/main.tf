@@ -1,3 +1,4 @@
+# infrastructure/aws/modules/iam/main.tf
 resource "aws_iam_role_policy" "github_actions_role" {
   name   = "github_actions_role"
   role   = aws_iam_role.github_actions_role.id
@@ -107,7 +108,7 @@ data "aws_iam_policy_document" "ecs_task_policy" {
       "ecs:StartTask",
       "ecs:StopTask",
       "ecs:DescribeTasks",
-      "ecs:ListTasks"
+      "ecs:ListTasks",
     ]
     resources = ["*"] # You might want to restrict this to specific resources.
   }

@@ -20,3 +20,12 @@ resource "aws_s3_object" "driver_stats_upload" {
   key    = "driver_stats.parquet"
   source = "${path.module}/../../../../data/driver_stats.parquet"
 }
+
+module "ecr" {
+  source = "./../../modules/ecr"
+  repository_name  = "feast-repo"
+}
+
+module "iam" {
+  source = "./../../modules/iam"
+}

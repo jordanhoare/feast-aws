@@ -42,8 +42,8 @@ module "ecs" {
   subnets                     = module.vpc.subnet_ids
   ecs_task_execution_role_arn = module.iam.ecs_task_role_arn
   image                       = "${module.ecr.repository_url}/feast-repo"
-  host_port                   = 80
-  container_port              = 80
+  host_port                   = 8000
+  container_port              = 8000
   memory                      = 512
   cpu                         = 256
 }

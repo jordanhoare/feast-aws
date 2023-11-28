@@ -16,4 +16,10 @@ on:
 jobs:
   build-and-test-ui:
     runs-on: ubuntu-latest
-    # UI specific CI steps...
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: TBD
+      run: |
+        # UI specific CD steps...

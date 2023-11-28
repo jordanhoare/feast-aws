@@ -9,4 +9,10 @@ on:
 jobs:
   deploy-ui:
     runs-on: ubuntu-latest
-    # UI specific CD steps...
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: TBD
+      run: |
+        # UI specific CD steps...

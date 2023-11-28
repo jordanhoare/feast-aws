@@ -2,7 +2,7 @@ name: Server CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
     paths:
       - 'server/**'
       - 'repository/**'

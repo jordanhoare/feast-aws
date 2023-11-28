@@ -6,15 +6,21 @@ resource "aws_iam_role" "github_actions_role" {
     Statement = [
       {
         Effect = "Allow",
+        Action = "sts:AssumeRoleWithWebIdentity",
         Principal = {
-          AWS = "arn:aws:iam::${var.aws_account_id}:root"
+          Federated = "arn:aws:iam::432702836969:oidc-provider/token.actions.githubusercontent.com"
         },
-        Action = "sts:AssumeRole"
+        Condition = {
+          "StringEquals": {
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+            "token.actions.githubusercontent.com:sub": "repo:jordanhoare/feast-aws:*"
+          }
+        }
       }
     ]
   })
-
 }
+
 
 resource "aws_iam_role_policy" "github_actions_role" {
   name   = "github_actions_role"
